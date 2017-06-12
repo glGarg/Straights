@@ -15,7 +15,7 @@ istream& operator>>(istream& in, Command& c)
 	getline(in, str);
 
 	stringstream ss(str);
-	string cmd;
+	string cmd = "error";
 	ss >> cmd;
 	
 	if (cmd == "play")

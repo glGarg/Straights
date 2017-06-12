@@ -1,14 +1,14 @@
 #include <iostream>
-#include "Straights.h"
+#include "Game.h"
 
 int main(int argc, char **argv)
 {
-	Straights& s = Straights::Instance();
+	Game game;
 	if (argc > 1)
 	{
 		seed = static_cast<int>(*argv[1]);
 	}
 
-	s.run();
+	game.run();
 	return 0;
 }
