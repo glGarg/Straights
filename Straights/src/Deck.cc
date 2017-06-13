@@ -13,7 +13,16 @@ Deck::Deck() : CARD_COUNT(52), cards_(CARD_COUNT), dealt_(0)
 	}
 }
 
-Deck::~Deck() {}
+Deck::~Deck()
+{
+	for (size_t i = 0; i < cards_.size(); ++i)
+	{
+		if (nullptr != cards_[i])
+		{
+			delete cards_[i];
+		}
+	}
+}
 
 std::vector<Card *> Deck::deal()
 {
