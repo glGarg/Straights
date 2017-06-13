@@ -1,9 +1,10 @@
 #pragma once
-#include "Deck.h"
-#include "Command.h"
-#include "Player.h"
 #include <iostream>
 #include <string>
+#include "Deck.h"
+#include "Command.h"
+#include "HumanPlayer.h"
+#include "ComputerPlayer.h"
 
 using std::cin;
 
@@ -14,6 +15,10 @@ public:
 	~Game();
 	void run();
 private:
+	bool isLegalMove(Card &) const;
+	int PLAYER_COUNT;
 	Deck deck_;
+	Card::Rank curRank_;
+	Card::Suit curSuit_;
 	std::vector<Player *> players_;
 };

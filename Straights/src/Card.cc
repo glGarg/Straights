@@ -11,9 +11,19 @@ Card::Suit Card::suit() const
 	return suit_;
 }
 
+bool Card::Suit::operator==(const Card::Suit& s) const
+{
+	return suit_ == s.suit();
+}
+
 Card::Rank Card::rank() const
 {
 	return rank_;
+}
+
+bool Card::Rank::operator==(const Card::Rank& r) const
+{
+	return rank_ == r.rank();
 }
 
 bool Card::operator==(const Card& c) const

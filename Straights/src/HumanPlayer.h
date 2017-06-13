@@ -6,5 +6,5 @@ class HumanPlayer : public Player
 public:
 	HumanPlayer();
 	virtual ~HumanPlayer();
+	bool isHuman() const override;
 };
-

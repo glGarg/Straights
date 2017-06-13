@@ -1,5 +1,6 @@
 #pragma once
 #include <random>
+#include <memory>
 #include "Card.h"
 
 extern int seed;
@@ -10,8 +11,10 @@ public:
 	Deck();
 	~Deck();
 	void shuffle();
+	std::vector<Card *> deal();
 private:
 	int CARD_COUNT;
+	int dealt_;
 	std::vector<Card *> cards_;
 };
 

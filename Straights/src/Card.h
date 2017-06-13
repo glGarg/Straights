@@ -31,6 +31,7 @@ public:
 
     	int suit() const;
     	// Returns: 0 <= suit < MAX_SUIT where 0 = C, 1 = D, 2 = H, 3 = S
+		bool operator==(const Suit&) const;
 
     private:
     	int suit_;
@@ -48,7 +49,7 @@ public:
 
     	int rank() const;
     	// Returns: 0 <= rank < MAX_RANK
-    	 
+		bool operator==(const Rank&) const;
     private:
     	int rank_;
     };
