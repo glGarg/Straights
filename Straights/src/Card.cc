@@ -2,7 +2,9 @@
 #include <string>
 #include <cassert>
 
-using namespace std;
+using std::ostream;
+using std::istream;
+using std::string;
 
 Card::Card(Card::Rank r, Card::Suit s) : suit_(s), rank_(r) {}
 
