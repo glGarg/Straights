@@ -11,6 +11,7 @@ public:
 	Deck();
 	~Deck();
 	void shuffle();
+	std::vector<std::string> getCards() const;
 	std::vector<Card *> deal();
 private:
 	int CARD_COUNT;

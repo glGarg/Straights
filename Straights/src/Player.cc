@@ -49,7 +49,7 @@ bool Player::discard(const Card& c)
 
 int Player::hasCard(const Card& card) const
 {
-	for (int i = 0; i < hand_.size(); ++i)
+	for (size_t i = 0; i < hand_.size(); ++i)
 	{
 		if(hand_[i]->rank() == card.rank() && hand_[i]->suit() == card.suit())
 		{

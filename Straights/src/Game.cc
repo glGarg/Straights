@@ -60,7 +60,11 @@ bool Game::notify(Command& c)
 			}
 			break;
 		case Command::Type::DECK:
+		{
+			std::vector<std::string> cards(std::move(deck_.getCards()));
+			view_->printDeck(cards);
 			break;
+		}
 		case Command::Type::RAGEQUIT:
 		{
 			Player *temp = p;

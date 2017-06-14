@@ -30,6 +30,17 @@ std::vector<Card *> Deck::deal()
 	return std::vector<Card *>(cards_.begin() + dealt_ - 13, cards_.begin() + dealt_);
 }
 
+std::vector<std::string> Deck::getCards() const
+{
+	std::vector<std::string> ret;
+	std::string suits;
+	for (auto &c : cards_)
+	{
+		ret.push_back(std::string(1, Card::ranks[c->rank().rank()]) + std::string(1, Card::suits[c->suit().suit()]));
+	}
+	return ret;
+}
+
 void Deck::shuffle()
 {
 	static std::mt19937 rng(seed);

@@ -8,6 +8,10 @@ using std::string;
 
 Card::Card(Card::Rank r, Card::Suit s) : suit_(s), rank_(r) {}
 
+string Card::suits = "CDHS";
+string Card::ranks = "A23456789TJQK";
+
+
 Card::Suit Card::suit() const
 {
 	return suit_;
@@ -35,15 +39,13 @@ bool Card::operator==(const Card& c) const
 
 ostream& operator<<(ostream& out, const Card::Suit& s)
 {
-	static string suits = "CDHS";
-	out << suits[s.suit()];
+	out << Card::suits[s.suit()];
 	return out;
 }
 
 ostream& operator<<(ostream& out, const Card::Rank& r)
 {
-	static string ranks = "A23456789TJQK";
-	out << ranks[r.rank()];
+	out << Card::ranks[r.rank()];
 	return out;
 }
 
