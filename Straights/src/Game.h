@@ -15,7 +15,7 @@ public:
 	void run();
 	bool notify(Command&) override;
 private:
-	bool isLegalMove(Card &) const;
+	bool isLegalMove(Card&) const;
 	int PLAYER_COUNT;
 	size_t nextPlayer_;
 	Deck deck_;

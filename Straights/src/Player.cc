@@ -18,10 +18,23 @@ std::vector<Card *> Player::getHand()
 	return hand_;
 }
 
-void Player::makeNextMove(const Card::Suit& suit, const Card::Rank& rank)
+const Card *Player::makeNextMove(const Card::Suit& suit, const Card::Rank& rank)
 {
 	// find a legal card to play for given suit and rank
+	for (size_t i = 0; i < hand_.size(); ++i)
+	{
+		if (hand_[i]->rank() == rank || (hand_[i]->suit() == suit &&
+			((rank.rank() != 0 && hand_[i]->rank().rank() == (rank.rank() - 1)) ||
+			(rank.rank() != 12 && hand_[i]->rank().rank() == (rank.rank() + 1)))))
+		{
 
+			return hand_[i];
+		}
+	}
+
+	discardPile_.push_back(hand_[0]);
+	hand_.erase(hand_.begin());
+	return nullptr;
 }
 
 bool Player::play(const Card& c)

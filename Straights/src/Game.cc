@@ -41,63 +41,62 @@ bool Game::notify(Command& c)
 	Player *p = players_[nextPlayer_];
 	switch (c.type)
 	{
-		case Command::Type::PLAY:
-			if (isLegalMove(c.card) && p->play(c.card))
-			{
-				curRank_ = c.card.rank();
-				curSuit_ = c.card.suit();
-			}
-			else
-			{
-				// output error message
-				return true;
-			}
-			break;
-		case Command::Type::DISCARD:
-			if (p->discard(c.card))
-			{
-				// must play legal card instead of discarding
-			}
-			break;
-		case Command::Type::DECK:
+	case Command::Type::PLAY:
+		if (isLegalMove(c.card) && p->play(c.card))
 		{
-			std::vector<std::string> cards(std::move(deck_.getCards()));
-			view_->printDeck(cards);
-			break;
-		}
-		case Command::Type::RAGEQUIT:
-		{
-			Player *temp = p;
-			p = new ComputerPlayer(std::move(p->getHand()));
-			delete temp;
-			p->makeNextMove(curSuit_, curRank_);
-			break;
-		}
-		case Command::Type::QUIT:
-			return false;
-		default:
-			break;
-	}
-
-	// rotate and make computer player moves until we find the next human player
-	for (size_t i = nextPlayer_; i < players_.size(); ++i)
-	{
-		if (players_[i]->isHuman() == false)
-		{
-			players_[i]->makeNextMove(curSuit_, curRank_);
+			curRank_ = c.card.rank();
+			curSuit_ = c.card.suit();
 		}
 		else
 		{
-			nextPlayer_ = i;
+			// output error message
 			return true;
 		}
+		break;
+	case Command::Type::DISCARD:
+		if (p->discard(c.card))
+		{
+			// must play legal card instead of discarding
+		}
+		break;
+	case Command::Type::DECK:
+	{
+		std::vector<std::string> cards(std::move(deck_.getCards()));
+		view_->printDeck(cards);
+		break;
+	}
+	case Command::Type::RAGEQUIT:
+	{
+		Player *temp = p;
+		p = new ComputerPlayer(std::move(p->getHand()));
+		delete temp;
+		p->makeNextMove(curSuit_, curRank_);
+		break;
+	}
+	case Command::Type::QUIT:
+		return false;
+	default:
+		break;
 	}
 
-	for (size_t i = 0; i < nextPlayer_; ++i)
+	// wrap and make computer player moves until we find the next human player
+	bool wrapped = false;
+	for (size_t i = nextPlayer_; i != nextPlayer_ || !wrapped; ++i)
 	{
+		if (i == players_.size())
+		{
+			i = 0;
+			wrapped = true;
+		}
+
 		if (players_[i]->isHuman() == false)
 		{
-			players_[i]->makeNextMove(curSuit_, curRank_);
+			const Card *cardPlayed = players_[i]->makeNextMove(curSuit_, curRank_);
+			if (nullptr != cardPlayed)
+			{
+				curRank_ = Card::Rank(cardPlayed->rank().rank());
+				curSuit_ = Card::Suit(cardPlayed->suit().suit());
+			}
 		}
 		else
 		{
@@ -105,6 +104,7 @@ bool Game::notify(Command& c)
 			break;
 		}
 	}
+
 	return true;
 }
 
