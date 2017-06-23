@@ -1,6 +1,6 @@
 #include "TextView.h"
 
-TextView::TextView() {}
+TextView::TextView(GameController *controller, Game *game) : View(controller, game) {}
 
 TextView::~TextView() {}
 
@@ -24,3 +24,5 @@ void TextView::printDeck(const std::vector<std::string>& cards) const
 		std::cout << std::endl;
 	}
 }
+
+void TextView::update() const {}

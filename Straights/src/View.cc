@@ -1,6 +1,9 @@
 #include "View.h"
 
-View::View() {}
+View::View(GameController *controller, Game *game) : Observer(), controller_(controller), game_(game)
+{
+	getUserInput();
+}
 
 View::~View() {}
 
@@ -14,17 +17,9 @@ void View::getUserInput()
 		{
 			break;
 		}
-		for (auto &o : observers_)
+		if(controller_->processCommand(c) == false)
 		{
-			if (o->notify(c) == false)
-			{
-				return;
-			}
+			return;
 		}
 	}
-}
-
-void View::attach(Observer *observer)
-{
-	observers_.push_back(observer);
 }

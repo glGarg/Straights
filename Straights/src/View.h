@@ -1,18 +1,19 @@
 #pragma once
 #include <string>
-#include "Player.h"
 #include "Command.h"
 #include "Observer.h"
+#include "GameController.h"
 
-class View
+class View : public Observer
 {
 public:
-	View();
+	View(GameController *, Game *);
 	virtual ~View();
 	virtual void displayError(std::string) const = 0;
 	virtual void printDeck(const std::vector<std::string>&) const = 0;
+	virtual void update() const = 0;
 	void getUserInput();
-	void attach(Observer *observer);
 private:
-	std::vector<Observer *> observers_;
+	GameController *controller_;
+	Game *game_;
 };
