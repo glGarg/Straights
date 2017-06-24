@@ -34,6 +34,7 @@ bool TextView::isPlayerHuman() const
 
 	if (std::cin.fail())
 	{
+		std::cin.clear();
 		return true;
 	}
 	else 

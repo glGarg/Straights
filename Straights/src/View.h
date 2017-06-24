@@ -8,6 +8,7 @@ class View
 public:
 	View(GameController *, Game *);
 	virtual ~View();
+	void init();
 	virtual void displayError(std::string) const = 0;
 	virtual void printDeck(const std::vector<std::string>&) const = 0;
 	virtual void update() const = 0;

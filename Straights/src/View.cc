@@ -6,15 +6,20 @@ View::View(GameController *controller, Game *game) : controller_(controller), ga
 	if (nullptr != game_) 
 	{
 		game_->subscribe(this);
-		game_->init();
 	}
-	getUserInput();
 }
 
 View::~View() {}
 
+void View::init()
+{
+	game_->init();
+	getUserInput();
+}
+
 void View::getUserInput()
 {
+	std::cin.ignore();
 	while (true)
 	{
 		Command c;

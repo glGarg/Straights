@@ -13,6 +13,7 @@ int main(int argc, char **argv)
 	Game game;
 	GameController controller(&game);
 	TextView view(&controller, &game);
+	view.init();
 
 	return 0;
 }
