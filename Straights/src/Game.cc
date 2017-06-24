@@ -5,7 +5,14 @@ Game::Game() : Subject(), PLAYER_COUNT(4), players_(PLAYER_COUNT), curRank_(Card
 {
 	for (int i = 0; i < PLAYER_COUNT; ++i)
 	{
-		players_[i] = new HumanPlayer();
+		if (isPlayerHuman())
+		{
+			players_[i] = new HumanPlayer();
+		}
+		else
+		{
+			players_[i] = new ComputerPlayer();
+		}
 	}
 
 	init();

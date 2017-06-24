@@ -18,3 +18,13 @@ void Subject::notify()
 		o->update();
 	}
 }
+
+bool Subject::isPlayerHuman() const
+{
+	if (observers_.size() > 0) 
+	{
+		return observers_[0]->isPlayerHuman();
+	}
+
+	return true;
+}

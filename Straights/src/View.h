@@ -11,6 +11,7 @@ public:
 	virtual void displayError(std::string) const = 0;
 	virtual void printDeck(const std::vector<std::string>&) const = 0;
 	virtual void update() const = 0;
+	virtual bool isPlayerHuman() const = 0;
 	void getUserInput();
 private:
 	GameController *controller_;

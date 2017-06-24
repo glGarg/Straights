@@ -12,6 +12,7 @@ public:
 	void unsubscribe(View *);
 protected:
 	void notify();
+	bool isPlayerHuman() const;
 private:
 	std::vector<View *> observers_;
 };

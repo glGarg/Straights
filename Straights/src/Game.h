@@ -7,7 +7,7 @@
 #include "ComputerPlayer.h"
 #include "TextView.h"
 
-class Game : Subject
+class Game : public Subject
 {
 public:
 	Game();

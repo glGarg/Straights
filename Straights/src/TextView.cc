@@ -26,3 +26,23 @@ void TextView::printDeck(const std::vector<std::string>& cards) const
 }
 
 void TextView::update() const {}
+
+bool TextView::isPlayerHuman() const
+{
+	char c;
+	std::cin >> c;
+
+	if (std::cin.fail())
+	{
+		return true;
+	}
+	else 
+	{
+		if (c == 'c')
+		{
+			return false;
+		}
+
+		return true;
+	}
+}
