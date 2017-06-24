@@ -1,7 +1,9 @@
 #include "Game.h"
 
 Game::Game() : Subject(), PLAYER_COUNT(4), players_(PLAYER_COUNT), curRank_(Card::Rank::SEVEN),
-			   curSuit_(Card::Suit::SPADE), nextPlayer_(0)
+			   curSuit_(Card::Suit::SPADE), nextPlayer_(0) {}
+
+void Game::init()
 {
 	for (int i = 0; i < PLAYER_COUNT; ++i)
 	{
@@ -15,11 +17,6 @@ Game::Game() : Subject(), PLAYER_COUNT(4), players_(PLAYER_COUNT), curRank_(Card
 		}
 	}
 
-	init();
-}
-
-void Game::init()
-{
 	deck_.shuffle();
 	int playerWith7OfSpades = -1;
 	for (int i = 0; i < PLAYER_COUNT; ++i)

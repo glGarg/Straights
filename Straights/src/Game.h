@@ -12,13 +12,13 @@ class Game : public Subject
 public:
 	Game();
 	~Game();
+	void init();
 	void playCard(Card&);
 	void discardCard(Card&);
 	void printDeck() const;
 	void rageQuit();
 	void decideNextPlayer();
 private:
-	void init();
 	bool isLegalMove(Card&) const;
 	const int PLAYER_COUNT;
 	size_t nextPlayer_;

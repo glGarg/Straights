@@ -6,6 +6,7 @@ View::View(GameController *controller, Game *game) : controller_(controller), ga
 	if (nullptr != game_) 
 	{
 		game_->subscribe(this);
+		game_->init();
 	}
 	getUserInput();
 }
