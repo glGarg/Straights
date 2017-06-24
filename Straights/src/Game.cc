@@ -56,6 +56,7 @@ void Game::playCard(Card& card)
 		curRank_ = card.rank();
 		curSuit_ = card.suit();
 		cardsPlayed_[curSuit_].emplace_back(card);
+		notify("Player " + std::to_string(nextPlayer_ - 1) + " plays " + std::string(card) + ".");
 		decideNextPlayer();
 	}
 	else
@@ -69,6 +70,7 @@ void Game::discardCard(Card& card)
 	Player *p = players_[nextPlayer_];
 	if (p->discard(card) == true)
 	{
+		notify("Player " + std::to_string(nextPlayer_ - 1) + " discards " + std::string(card) + ".");
 		decideNextPlayer();
 	}
 	else

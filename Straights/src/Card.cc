@@ -39,6 +39,11 @@ bool Card::operator==(const Card& c) const
 	return (suit().suit() == c.suit().suit() && rank().rank() == c.rank().rank());
 }
 
+Card::operator std::string() const
+{
+	return std::string(1, Card::ranks[rank_.rank()]) + std::string(1, Card::suits[suit_.suit()]);
+}
+
 ostream& operator<<(ostream& out, const Card::Suit& s)
 {
 	out << Card::suits[s.suit()];

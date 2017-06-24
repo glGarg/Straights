@@ -36,7 +36,7 @@ std::vector<std::string> Deck::getCards() const
 	std::string suits;
 	for (auto &c : cards_)
 	{
-		ret.push_back(std::string(1, Card::ranks[c->rank().rank()]) + std::string(1, Card::suits[c->suit().suit()]));
+		ret.emplace_back(*c);
 	}
 	return ret;
 }

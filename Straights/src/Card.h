@@ -59,6 +59,7 @@ public:
 	Suit suit() const;
 	Rank rank() const;
 	bool operator==(const Card&) const;
+	operator std::string() const;
 	static std::string suits;
 	static std::string ranks;
 
