@@ -113,18 +113,28 @@
     <ClCompile Include="src\Card.cc" />
     <ClCompile Include="src\Command.cc" />
     <ClCompile Include="src\ComputerPlayer.cc" />
+    <ClCompile Include="src\Deck.cc" />
+    <ClCompile Include="src\Game.cc" />
+    <ClCompile Include="src\GameController.cc" />
     <ClCompile Include="src\HumanPlayer.cc" />
     <ClCompile Include="src\main.cc" />
     <ClCompile Include="src\Player.cc" />
-    <ClCompile Include="src\Straights.cc" />
+    <ClCompile Include="src\Subject.cc" />
+    <ClCompile Include="src\TextView.cc" />
+    <ClCompile Include="src\View.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Card.h" />
     <ClInclude Include="src\Command.h" />
     <ClInclude Include="src\ComputerPlayer.h" />
+    <ClInclude Include="src\Deck.h" />
+    <ClInclude Include="src\Game.h" />
+    <ClInclude Include="src\GameController.h" />
     <ClInclude Include="src\HumanPlayer.h" />
     <ClInclude Include="src\Player.h" />
-    <ClInclude Include="src\Straights.h" />
+    <ClInclude Include="src\Subject.h" />
+    <ClInclude Include="src\TextView.h" />
+    <ClInclude Include="src\View.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

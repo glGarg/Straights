@@ -24,9 +24,6 @@
     <ClCompile Include="src\Player.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Straights.cc">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\ComputerPlayer.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -34,6 +31,24 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\main.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Deck.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\View.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TextView.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameController.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Subject.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -47,13 +62,28 @@
     <ClInclude Include="src\Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Straights.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\ComputerPlayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\HumanPlayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Deck.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\View.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TextView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Subject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
