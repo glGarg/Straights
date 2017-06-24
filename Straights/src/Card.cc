@@ -22,6 +22,8 @@ bool Card::Suit::operator==(const Card::Suit& s) const
 	return suit_ == s.suit();
 }
 
+Card::Suit::operator int() const { return suit_; }
+
 Card::Rank Card::rank() const
 {
 	return rank_;

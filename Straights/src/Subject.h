@@ -11,8 +11,9 @@ public:
 	void subscribe(View *);
 	void unsubscribe(View *);
 protected:
-	void notify();
-	bool isPlayerHuman() const;
+	void notify(std::string) const;
+	void notify(std::vector<std::string>&) const;
+	bool isPlayerHuman(int) const;
 private:
 	std::vector<View *> observers_;
 };

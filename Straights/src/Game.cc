@@ -7,7 +7,7 @@ void Game::init()
 {
 	for (int i = 0; i < PLAYER_COUNT; ++i)
 	{
-		if (isPlayerHuman())
+		if (isPlayerHuman(i + 1))
 		{
 			players_[i] = new HumanPlayer();
 		}
@@ -55,11 +55,12 @@ void Game::playCard(Card& card)
 	{
 		curRank_ = card.rank();
 		curSuit_ = card.suit();
+		cardsPlayed_[curSuit_].emplace_back(card);
 		decideNextPlayer();
 	}
 	else
 	{
-		// tell view output error message
+		notify("This is not a legal play.");
 	}
 }
 
@@ -72,14 +73,14 @@ void Game::discardCard(Card& card)
 	}
 	else
 	{
-		// view tells player must play legal card instead of discarding
+		notify("You have a legal play. You may not discard.");
 	}
 }
 
 void Game::printDeck() const
 {
 	std::vector<std::string> cards(std::move(deck_.getCards()));
-	//view_->printDeck(cards);
+	notify(cards);
 }
 
 void Game::rageQuit()

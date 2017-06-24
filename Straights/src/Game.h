@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <map>
 #include "Deck.h"
 #include "Subject.h"
 #include "HumanPlayer.h"
@@ -26,4 +27,5 @@ private:
 	Card::Rank curRank_;
 	Card::Suit curSuit_;
 	std::vector<Player *> players_;
+	std::map<Card::Suit, std::vector<Card>> cardsPlayed_;
 };
