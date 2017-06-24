@@ -4,12 +4,12 @@ Subject::Subject() {}
 
 Subject::~Subject() {}
 
-void Subject::subscribe(Observer *o)
+void Subject::subscribe(View *o)
 {
 	observers_.push_back(o);
 }
 
-void Subject::unsubscribe(Observer *o) {}
+void Subject::unsubscribe(View *o) {}
 
 void Subject::notify()
 {

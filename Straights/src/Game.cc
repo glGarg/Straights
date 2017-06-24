@@ -1,7 +1,7 @@
 #include "Game.h"
 
 Game::Game() : Subject(), PLAYER_COUNT(4), players_(PLAYER_COUNT), curRank_(Card::Rank::SEVEN),
-curSuit_(Card::Suit::SPADE), nextPlayer_(0)
+			   curSuit_(Card::Suit::SPADE), nextPlayer_(0)
 {
 	for (int i = 0; i < PLAYER_COUNT; ++i)
 	{

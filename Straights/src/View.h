@@ -1,10 +1,9 @@
 #pragma once
 #include <string>
 #include "Command.h"
-#include "Observer.h"
 #include "GameController.h"
 
-class View : public Observer
+class View
 {
 public:
 	View(GameController *, Game *);

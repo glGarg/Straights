@@ -1,18 +1,18 @@
 #pragma once
 #include <iostream>
 #include <vector>
-#include "Observer.h"
+#include "View.h"
 
 class Subject
 {
 public:
 	Subject();
 	virtual ~Subject();
-	void subscribe(Observer *);
-	void unsubscribe(Observer *);
+	void subscribe(View *);
+	void unsubscribe(View *);
 protected:
 	void notify();
 private:
-	std::vector<Observer *> observers_;
+	std::vector<View *> observers_;
 };
 

@@ -1,6 +1,6 @@
 #include "View.h"
 
-View::View(GameController *controller, Game *game) : Observer(), controller_(controller), game_(game)
+View::View(GameController *controller, Game *game) : controller_(controller), game_(game)
 {
 	getUserInput();
 }
