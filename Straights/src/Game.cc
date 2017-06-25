@@ -158,7 +158,7 @@ bool Game::tallyScores()
 void Game::decideNextPlayer()
 {
 	bool wrapped = false;
-	for (size_t i = nextPlayer_; i != nextPlayer_ || !wrapped; ++i)
+	for (size_t i = players_[nextPlayer_]->isHuman() ? ((nextPlayer_ + 1) % 4) : nextPlayer_; i != nextPlayer_ || !wrapped; ++i)
 	{
 		if (i == players_.size())
 		{
