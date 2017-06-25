@@ -27,8 +27,9 @@ const Card *Player::makeNextMove(const Card::Suit& suit, const Card::Rank& rank,
 			((rank.rank() != 0 && hand_[i]->rank().rank() == (rank.rank() - 1)) ||
 			(rank.rank() != 12 && hand_[i]->rank().rank() == (rank.rank() + 1)))))
 		{
-
-			return hand_[i];
+			Card *played = hand_[i];
+			hand_.erase(hand_.begin() + i);
+			return played;
 		}
 	}
 
