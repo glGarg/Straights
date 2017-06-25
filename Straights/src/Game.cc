@@ -247,7 +247,7 @@ void Game::displayGameState() const
 
 		for (size_t i = 0; i < iter.second.size(); ++i)
 		{
-			cardsInSuit += " " + Card::ranks[iter.second[i].rank().rank()];
+			cardsInSuit += " " + std::string(1, Card::ranks[iter.second[i].rank()]);
 		}
 
 		notify(cardsInSuit);
