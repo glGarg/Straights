@@ -24,6 +24,7 @@ private:
 	void displayGameState() const;
 	void decideNextPlayer();
 	const int PLAYER_COUNT;
+	bool firstTurn_;
 	size_t nextPlayer_;
 	Deck deck_;
 	Card::Rank curRank_;

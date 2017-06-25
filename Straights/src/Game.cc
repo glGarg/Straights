@@ -1,7 +1,8 @@
 #include "Game.h"
 
-Game::Game() : Subject(), PLAYER_COUNT(4), players_(PLAYER_COUNT), curRank_(Card::Rank::SEVEN),
-			   curSuit_(Card::Suit::SPADE), nextPlayer_(0) {}
+Game::Game() : Subject(), PLAYER_COUNT(4), firstTurn_(true), players_(PLAYER_COUNT), curRank_(Card::Rank::SEVEN),
+			   curSuit_(Card::Suit::SPADE), nextPlayer_(0), cardsPlayed_{{Card::Suit(0), {}}, {Card::Suit(1), {}},
+																		 {Card::Suit(2), {}}, {Card::Suit(3), {}}} {}
 
 void Game::init()
 {
@@ -36,8 +37,8 @@ void Game::init()
 	}
 
 	nextPlayer_ = playerWith7OfSpades;
-	decideNextPlayer();
 	notify("A new round begins. It's player " + std::to_string(nextPlayer_ + 1) + "'s turn to play.");
+	decideNextPlayer();
 }
 
 Game::~Game()
@@ -60,6 +61,7 @@ void Game::playCard(Card& card)
 		curSuit_ = card.suit();
 		cardsPlayed_[curSuit_].emplace_back(card);
 		notify("Player " + std::to_string(nextPlayer_ - 1) + " plays " + std::string(card) + ".");
+		firstTurn_ = false;
 		decideNextPlayer();
 	}
 	else
@@ -94,7 +96,6 @@ void Game::rageQuit()
 	Player *temp = p;
 	p = new ComputerPlayer(std::move(p->getHand()));
 	delete temp;
-	p->makeNextMove(curSuit_, curRank_);
 	decideNextPlayer();
 }
 
@@ -116,6 +117,7 @@ void Game::decideNextPlayer()
 			{
 				curRank_ = Card::Rank(cardPlayed->rank().rank());
 				curSuit_ = Card::Suit(cardPlayed->suit().suit());
+				firstTurn_ = false;
 			}
 		}
 		else
@@ -129,9 +131,9 @@ void Game::decideNextPlayer()
 
 bool Game::isLegalMove(Card &c) const
 {
-	if (c.rank() == curRank_ || (c.suit() == curSuit_ &&
-		((curRank_.rank() != 0 && c.rank() == Card::Rank(curRank_.rank() - 1)) ||
-		(curRank_.rank() != 12 && c.rank() == Card::Rank(curRank_.rank() + 1)))))
+	if (c.rank() == curRank_ && (firstTurn_ == true && c.suit() == curSuit_ || firstTurn_ == false) ||
+	   (c.suit() == curSuit_ && ((curRank_.rank() != 0 && c.rank() == Card::Rank(curRank_.rank() - 1)) ||
+	   (curRank_.rank() != 12 && c.rank() == Card::Rank(curRank_.rank() + 1)))))
 	{
 		return true;
 	}
@@ -140,7 +142,6 @@ bool Game::isLegalMove(Card &c) const
 
 void Game::displayGameState() const
 {
-
 	notify("Cards on the table:");
 
 	for (auto &iter : cardsPlayed_)
