@@ -110,14 +110,44 @@ bool Game::tallyScores()
 	bool ret = true;
 	for (int i = 0; i < players_.size(); ++i)
 	{
-		playerScores_[i] += players_[i]->getScore();
+		notify("Player " + std::to_string(i + 1) + "'s discards:" + players_[i]->getDiscardPile());
+
+		int oldScore = playerScores_[i];
+		int scoreGained = players_[i]->getScore();
+		int newScore = oldScore + scoreGained;
+
+		notify("Player " + std::to_string(i + 1) + "'s score: " + std::to_string(oldScore) +
+			" + " + std::to_string(scoreGained) + " = " + std::to_string(newScore));
+
+		playerScores_[i] = newScore;
 		if (ret == true)
 		{
 			ret = !(playerScores_[i] >= 80);
 		}
 	}
 
-	// decide winner
+	if (!ret)
+	{
+		std::vector<int> lowestScoreIndices = { 0 };
+		for (int i = 1; i < players_.size(); ++i)
+		{
+			if (playerScores_[i] < playerScores_[lowestScoreIndices[0]])
+			{
+				lowestScoreIndices.erase(lowestScoreIndices.begin(), lowestScoreIndices.end());
+				lowestScoreIndices.push_back(i);
+			}
+
+			else if (playerScores_[i] == playerScores_[lowestScoreIndices[0]])
+			{
+				lowestScoreIndices.push_back(i);
+			}
+		}
+
+		for (int i = 0; i < lowestScoreIndices.size(); ++i)
+		{
+			notify("Player " + std::to_string(i + 1) + " wins!");
+		}
+	}
 
 	return ret;
 }
@@ -182,16 +212,7 @@ bool Game::isLegalMove(Card &c) const
 	}
 
 	return false;
-	/*
-	//awesome straights
-	if (c.rank() == curRank_ && (firstTurn_ == true && c.suit() == curSuit_ || firstTurn_ == false) ||
-	   (c.suit() == curSuit_ && ((curRank_.rank() != 0 && c.rank() == Card::Rank(curRank_.rank() - 1)) ||
-	   (curRank_.rank() != 12 && c.rank() == Card::Rank(curRank_.rank() + 1)))))
-	{
-		return true;
-	}
-	return false;
-	*/
+	
 }
 
 void Game::displayGameState() const

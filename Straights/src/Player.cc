@@ -69,12 +69,23 @@ bool Player::isHandEmpty() const
 int Player::getScore() const
 {
 	int score = 0;
-	for (auto &c : discardPile_)
+	for (int i = 0; i < discardPile_.size(); ++i)
 	{
-		score += c->rank();
+		score += discardPile_[i]->rank();
 	}
 
 	return score;
+}
+
+std::string Player::getDiscardPile() const
+{
+	std::string discardedCards;
+
+	for (int i = 0; i < discardPile_.size(); ++i) 
+	{
+		discardedCards += " " + std::string(*discardPile_[i]);
+	}
+	return discardedCards;
 }
 
 int Player::hasCard(const Card& card) const
