@@ -11,7 +11,7 @@ public:
 	virtual ~Player();
 	void setHand(std::vector<Card *>&);
 	std::vector<Card *> getHand();
-	const Card *makeNextMove(const Card::Suit&, const Card::Rank&);
+	const Card *makeNextMove(const Card::Suit&, const Card::Rank&, Card **);
 	bool play(const Card&);
 	bool discard(const Card&);
 	virtual bool isHuman() const = 0;

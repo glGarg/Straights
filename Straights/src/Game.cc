@@ -60,7 +60,7 @@ void Game::playCard(Card& card)
 		curRank_ = card.rank();
 		curSuit_ = card.suit();
 		cardsPlayed_[curSuit_].emplace_back(card);
-		notify("Player " + std::to_string(nextPlayer_ - 1) + " plays " + std::string(card) + ".");
+		outputPlayMove(nextPlayer_ + 1, card);
 		firstTurn_ = false;
 		decideNextPlayer();
 	}
@@ -75,7 +75,7 @@ void Game::discardCard(Card& card)
 	Player *p = players_[nextPlayer_];
 	if (p->discard(card) == true)
 	{
-		notify("Player " + std::to_string(nextPlayer_ - 1) + " discards " + std::string(card) + ".");
+		outputDiscardMove(nextPlayer_ + 1, std::string(card));
 		decideNextPlayer();
 	}
 	else
@@ -112,12 +112,19 @@ void Game::decideNextPlayer()
 
 		if (players_[i]->isHuman() == false)
 		{
-			const Card *cardPlayed = players_[i]->makeNextMove(curSuit_, curRank_);
+			Card *discardedCard = nullptr;
+			const Card *cardPlayed = players_[i]->makeNextMove(curSuit_, curRank_, &discardedCard);
 			if (nullptr != cardPlayed)
 			{
 				curRank_ = Card::Rank(cardPlayed->rank().rank());
 				curSuit_ = Card::Suit(cardPlayed->suit().suit());
+				cardsPlayed_[curSuit_].push_back(*cardPlayed);
+				outputPlayMove(i + 1, *cardPlayed);
 				firstTurn_ = false;
+			}
+			else if (nullptr != discardedCard)
+			{
+				outputDiscardMove(i + 1, *discardedCard);
 			}
 		}
 		else
@@ -131,6 +138,29 @@ void Game::decideNextPlayer()
 
 bool Game::isLegalMove(Card &c) const
 {
+	if (((firstTurn_ && c.suit().suit() == Card::Suit::SPADE) || !firstTurn_) && c.rank() == Card::Rank::SEVEN)
+	{
+		return true;
+	}
+	else
+	{
+		for (auto &iter : cardsPlayed_)
+		{
+			for (size_t i = 0; i < iter.second.size(); ++i)
+			{
+				if (c.suit() == iter.second[i].suit() &&
+				   ((curRank_.rank() != 0 && c.rank() == Card::Rank(curRank_.rank() - 1)) ||
+				   (curRank_.rank() != 12 && c.rank() == Card::Rank(curRank_.rank() + 1))))
+				{
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
+	/*
+	//awesome straights
 	if (c.rank() == curRank_ && (firstTurn_ == true && c.suit() == curSuit_ || firstTurn_ == false) ||
 	   (c.suit() == curSuit_ && ((curRank_.rank() != 0 && c.rank() == Card::Rank(curRank_.rank() - 1)) ||
 	   (curRank_.rank() != 12 && c.rank() == Card::Rank(curRank_.rank() + 1)))))
@@ -138,6 +168,7 @@ bool Game::isLegalMove(Card &c) const
 		return true;
 	}
 	return false;
+	*/
 }
 
 void Game::displayGameState() const
@@ -170,4 +201,14 @@ void Game::displayGameState() const
 	}
 
 	notify(yourHand + '\n' + legalPlays);
+}
+
+void Game::outputPlayMove(int id, std::string card) const
+{
+	notify("Player " + std::to_string(id) + " plays " + card + ".");
+}
+
+void Game::outputDiscardMove(int id, std::string card) const
+{
+	notify("Player " + std::to_string(id) + " discards " + card + ".");
 }

@@ -18,8 +18,9 @@ public:
 	void discardCard(Card&);
 	void printDeck() const;
 	void rageQuit();
-	
 private:
+	void outputPlayMove(int, std::string) const;
+	void outputDiscardMove(int, std::string) const;
 	bool isLegalMove(Card&) const;
 	void displayGameState() const;
 	void decideNextPlayer();

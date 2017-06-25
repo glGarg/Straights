@@ -18,7 +18,7 @@ std::vector<Card *> Player::getHand()
 	return hand_;
 }
 
-const Card *Player::makeNextMove(const Card::Suit& suit, const Card::Rank& rank)
+const Card *Player::makeNextMove(const Card::Suit& suit, const Card::Rank& rank, Card **discarded)
 {
 	// find a legal card to play for given suit and rank
 	for (size_t i = 0; i < hand_.size(); ++i)
@@ -34,6 +34,7 @@ const Card *Player::makeNextMove(const Card::Suit& suit, const Card::Rank& rank)
 
 	discardPile_.push_back(hand_[0]);
 	hand_.erase(hand_.begin());
+	discarded = &discardPile_.back();
 	return nullptr;
 }
 
