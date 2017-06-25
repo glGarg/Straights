@@ -18,6 +18,8 @@ public:
 	void discardCard(Card&);
 	void printDeck() const;
 	void rageQuit();
+	bool isFirstPlayerHandEmpty() const;
+	bool tallyScores();
 private:
 	void outputPlayMove(int, std::string) const;
 	void outputDiscardMove(int, std::string) const;
@@ -27,9 +29,12 @@ private:
 	const int PLAYER_COUNT;
 	bool firstTurn_;
 	size_t nextPlayer_;
+	size_t firstPlayer_;
 	Deck deck_;
 	Card::Rank curRank_;
 	Card::Suit curSuit_;
 	std::vector<Player *> players_;
+	std::vector<int> playerScores_;
 	std::map<Card::Suit, std::vector<Card>> cardsPlayed_;
 };
+

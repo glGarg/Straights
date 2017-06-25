@@ -28,6 +28,11 @@ bool GameController::processCommand(Command& c)
 		break;
 	}
 
+	if (model_->isFirstPlayerHandEmpty())
+	{
+		model_->tallyScores();
+	}
+
 	return true;
 }
 

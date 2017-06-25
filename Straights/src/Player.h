@@ -15,6 +15,8 @@ public:
 	bool play(const Card&);
 	bool discard(const Card&);
 	virtual bool isHuman() const = 0;
+	bool isHandEmpty() const;
+	int getScore() const;
 private:
 	int hasCard(const Card&) const;
 	std::vector<Card *> hand_;

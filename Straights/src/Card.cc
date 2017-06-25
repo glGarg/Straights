@@ -51,6 +51,11 @@ bool Card::Rank::operator==(const Card::Rank& r) const
 	return rank_ == r.rank();
 }
 
+Card::Rank::operator int() const
+{
+	return rank_;
+}
+
 bool Card::operator==(const Card& c) const
 {
 	return (suit().suit() == c.suit().suit() && rank().rank() == c.rank().rank());

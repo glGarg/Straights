@@ -30,7 +30,7 @@ void View::getUserInput()
 		}
 		if(controller_->processCommand(c) == false)
 		{
-			return;
+			break;
 		}
 	}
 }

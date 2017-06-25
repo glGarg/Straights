@@ -52,6 +52,7 @@ public:
     	int rank() const;
     	// Returns: 0 <= rank < MAX_RANK
 		bool operator==(const Rank&) const;
+		operator int() const;
     private:
     	int rank_;
     };

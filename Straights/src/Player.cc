@@ -61,6 +61,22 @@ bool Player::discard(const Card& c)
 	return false;
 }
 
+bool Player::isHandEmpty() const
+{
+	return hand_.size() == 0;
+}
+
+int Player::getScore() const
+{
+	int score = 0;
+	for (auto &c : discardPile_)
+	{
+		score += c->rank();
+	}
+
+	return score;
+}
+
 int Player::hasCard(const Card& card) const
 {
 	for (size_t i = 0; i < hand_.size(); ++i)

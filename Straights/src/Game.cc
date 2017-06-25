@@ -1,8 +1,8 @@
 #include "Game.h"
 
-Game::Game() : Subject(), PLAYER_COUNT(4), firstTurn_(true), players_(PLAYER_COUNT), curRank_(Card::Rank::SEVEN),
-			   curSuit_(Card::Suit::SPADE), nextPlayer_(0), cardsPlayed_{{Card::Suit(0), {}}, {Card::Suit(1), {}},
-																		 {Card::Suit(2), {}}, {Card::Suit(3), {}}} {}
+Game::Game() : Subject(), PLAYER_COUNT(4), firstTurn_(true), players_(PLAYER_COUNT), playerScores_(PLAYER_COUNT), curRank_(Card::Rank::SEVEN),
+			   curSuit_(Card::Suit::SPADE), nextPlayer_(0), firstPlayer_(0), cardsPlayed_{{Card::Suit(0), {}}, {Card::Suit(1), {}},
+																						  {Card::Suit(2), {}}, {Card::Suit(3), {}}} {}
 
 void Game::init()
 {
@@ -36,7 +36,7 @@ void Game::init()
 		players_[i]->setHand(hand);
 	}
 
-	nextPlayer_ = playerWith7OfSpades;
+	firstPlayer_ = nextPlayer_ = playerWith7OfSpades;
 	notify("A new round begins. It's player " + std::to_string(nextPlayer_ + 1) + "'s turn to play.");
 	decideNextPlayer();
 }
@@ -82,6 +82,7 @@ void Game::discardCard(Card& card)
 	{
 		notify("You have a legal play. You may not discard.");
 	}
+
 }
 
 void Game::printDeck() const
@@ -97,6 +98,28 @@ void Game::rageQuit()
 	p = new ComputerPlayer(std::move(p->getHand()));
 	delete temp;
 	decideNextPlayer();
+}
+
+bool Game::isFirstPlayerHandEmpty() const
+{
+	return players_[firstPlayer_]->isHandEmpty();
+}
+
+bool Game::tallyScores()
+{
+	bool ret = true;
+	for (int i = 0; i < players_.size(); ++i)
+	{
+		playerScores_[i] += players_[i]->getScore();
+		if (ret == true)
+		{
+			ret = !(playerScores_[i] >= 80);
+		}
+	}
+
+	// decide winner
+
+	return ret;
 }
 
 void Game::decideNextPlayer()
@@ -138,7 +161,7 @@ void Game::decideNextPlayer()
 
 bool Game::isLegalMove(Card &c) const
 {
-	if (((firstTurn_ && c.suit().suit() == Card::Suit::SPADE) || !firstTurn_) && c.rank() == Card::Rank::SEVEN)
+	if (((firstTurn_ && c.suit().suit() == Card::Suit::SPADE) || !firstTurn_) && c.rank().rank() == Card::Rank::SEVEN)
 	{
 		return true;
 	}
