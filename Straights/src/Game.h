@@ -13,22 +13,24 @@ class Game : public Subject
 public:
 	Game();
 	~Game();
-	bool init();
+	void init();
 	void playCard(Card&);
 	void discardCard(Card&);
 	void printDeck() const;
 	void rageQuit();
 	bool isLastPlayerHandEmpty() const;
-	bool tallyScores();
+	void tallyScores();
+	bool isOver() const;
 private:
 	void outputPlayMove(int, std::string) const;
 	void outputDiscardMove(int, std::string) const;
 	bool isLegalMove(Card&) const;
 	void displayGameState() const;
-	bool decideNextPlayer();
+	void decideNextPlayer();
 	void resetRound();
 	const int PLAYER_COUNT;
 	bool firstTurn_;
+	bool isOver_;
 	size_t nextPlayer_;
 	size_t lastPlayer_;
 	Deck deck_;

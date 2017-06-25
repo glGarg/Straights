@@ -31,6 +31,7 @@ bool GameController::processCommand(Command& c)
 	if (model_->isLastPlayerHandEmpty())
 	{
 		model_->tallyScores();
+		return !model_->isOver();
 	}
 
 	return true;

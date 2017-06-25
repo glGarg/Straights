@@ -1,10 +1,12 @@
 #include "Game.h"
 
-Game::Game() : Subject(), PLAYER_COUNT(4), firstTurn_(true), players_(PLAYER_COUNT), playerScores_(PLAYER_COUNT), curRank_(Card::Rank::SEVEN),
-			   curSuit_(Card::Suit::SPADE), nextPlayer_(0), lastPlayer_(0), cardsPlayed_{{Card::Suit(0), {}}, {Card::Suit(1), {}},
-																						  {Card::Suit(2), {}}, {Card::Suit(3), {}}} {}
+Game::Game() : Subject(), PLAYER_COUNT(4), firstTurn_(true), isOver_(false), 
+			   players_(PLAYER_COUNT), playerScores_(PLAYER_COUNT), curRank_(Card::Rank::SEVEN),
+			   curSuit_(Card::Suit::SPADE), nextPlayer_(0), lastPlayer_(0),
+			   cardsPlayed_{{Card::Suit(0), {}}, {Card::Suit(1), {}},
+							{Card::Suit(2), {}}, {Card::Suit(3), {}}} {}
 
-bool Game::init()
+void Game::init()
 {
 	if (firstTurn_ == true)
 	{
@@ -42,7 +44,7 @@ bool Game::init()
 	nextPlayer_ = playerWith7OfSpades;
 	lastPlayer_ = (nextPlayer_ + PLAYER_COUNT - 1) % 4;
 	notify("A new round begins. It's player " + std::to_string(nextPlayer_ + 1) + "'s turn to play.");
-	return decideNextPlayer();
+	decideNextPlayer();
 }
 
 Game::~Game()
@@ -119,9 +121,9 @@ bool Game::isLastPlayerHandEmpty() const
 	return players_[lastPlayer_]->isHandEmpty();
 }
 
-bool Game::tallyScores()
+void Game::tallyScores()
 {
-	bool ret = true;
+	bool roundNotDone = true;
 	for (size_t i = 0; i < players_.size(); ++i)
 	{
 		notify("Player " + std::to_string(i + 1) + "'s discards:" + players_[i]->getDiscardPile());
@@ -134,13 +136,13 @@ bool Game::tallyScores()
 			" + " + std::to_string(scoreGained) + " = " + std::to_string(newScore));
 
 		playerScores_[i] = newScore;
-		if (ret == true)
+		if (roundNotDone == true)
 		{
-			ret = !(playerScores_[i] >= 80);
+			roundNotDone = !(playerScores_[i] >= 80);
 		}
 	}
 
-	if (!ret)
+	if (!roundNotDone)
 	{
 		std::vector<size_t> lowestScoreIndices = { 0 };
 		for (size_t i = 1; i < players_.size(); ++i)
@@ -160,12 +162,16 @@ bool Game::tallyScores()
 		{
 			notify("Player " + std::to_string(lowestScoreIndices[i] + 1) + " wins!");
 		}
+		isOver_ = true;
 	}
-
-	return ret;
 }
 
-bool Game::decideNextPlayer()
+bool Game::isOver() const
+{
+	return isOver_;
+}
+
+void Game::decideNextPlayer()
 {
 	bool wrapped = false;
 	for (size_t i = players_[nextPlayer_]->isHuman() ? ((nextPlayer_ + 1) % 4) : nextPlayer_;
@@ -175,7 +181,7 @@ bool Game::decideNextPlayer()
 		if (isLastPlayerHandEmpty())
 		{
 			tallyScores();
-			return false;
+			return;
 		}
 
 		if (i == players_.size())
@@ -209,7 +215,6 @@ bool Game::decideNextPlayer()
 	}
 
 	displayGameState();
-	return true;
 }
 
 void Game::resetRound()

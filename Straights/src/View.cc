@@ -13,7 +13,8 @@ View::~View() {}
 
 void View::init()
 {
-	if (game_->init() == false)
+	game_->init();
+	if (game_->isOver() == true)
 	{
 		return;
 	}
