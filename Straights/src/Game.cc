@@ -1,10 +1,10 @@
 #include "Game.h"
 
 Game::Game() : Subject(), PLAYER_COUNT(4), firstTurn_(true), players_(PLAYER_COUNT), playerScores_(PLAYER_COUNT), curRank_(Card::Rank::SEVEN),
-			   curSuit_(Card::Suit::SPADE), nextPlayer_(0), firstPlayer_(0), cardsPlayed_{{Card::Suit(0), {}}, {Card::Suit(1), {}},
+			   curSuit_(Card::Suit::SPADE), nextPlayer_(0), lastPlayer_(0), cardsPlayed_{{Card::Suit(0), {}}, {Card::Suit(1), {}},
 																						  {Card::Suit(2), {}}, {Card::Suit(3), {}}} {}
 
-void Game::init()
+bool Game::init()
 {
 	if (firstTurn_ == true)
 	{
@@ -39,9 +39,10 @@ void Game::init()
 		players_[i]->setHand(hand);
 	}
 
-	firstPlayer_ = nextPlayer_ = playerWith7OfSpades;
+	nextPlayer_ = playerWith7OfSpades;
+	lastPlayer_ = (nextPlayer_ + PLAYER_COUNT - 1) % 4;
 	notify("A new round begins. It's player " + std::to_string(nextPlayer_ + 1) + "'s turn to play.");
-	decideNextPlayer();
+	return decideNextPlayer();
 }
 
 Game::~Game()
@@ -76,6 +77,16 @@ void Game::playCard(Card& card)
 void Game::discardCard(Card& card)
 {
 	Player *p = players_[nextPlayer_];
+	std::vector<Card *> hand = p->getHand();
+	for (size_t i = 0; i < hand.size(); ++i)
+	{
+		if (isLegalMove(*hand[i]))
+		{
+			notify("You have a legal play. You may not discard.");
+			return;
+		}
+	}
+
 	if (p->discard(card) == true)
 	{
 		outputDiscardMove(nextPlayer_ + 1, std::string(card));
@@ -83,7 +94,7 @@ void Game::discardCard(Card& card)
 	}
 	else
 	{
-		notify("You have a legal play. You may not discard.");
+		notify("This is not a legal discard.");
 	}
 
 }
@@ -103,9 +114,9 @@ void Game::rageQuit()
 	decideNextPlayer();
 }
 
-bool Game::isFirstPlayerHandEmpty() const
+bool Game::isLastPlayerHandEmpty() const
 {
-	return players_[firstPlayer_]->isHandEmpty();
+	return players_[lastPlayer_]->isHandEmpty();
 }
 
 bool Game::tallyScores()
@@ -131,15 +142,14 @@ bool Game::tallyScores()
 
 	if (!ret)
 	{
-		std::vector<int> lowestScoreIndices = { 0 };
+		std::vector<size_t> lowestScoreIndices = { 0 };
 		for (size_t i = 1; i < players_.size(); ++i)
 		{
 			if (playerScores_[i] < playerScores_[lowestScoreIndices[0]])
 			{
-				lowestScoreIndices.erase(lowestScoreIndices.begin(), lowestScoreIndices.end());
+				lowestScoreIndices.clear();
 				lowestScoreIndices.push_back(i);
 			}
-
 			else if (playerScores_[i] == playerScores_[lowestScoreIndices[0]])
 			{
 				lowestScoreIndices.push_back(i);
@@ -148,18 +158,26 @@ bool Game::tallyScores()
 
 		for (size_t i = 0; i < lowestScoreIndices.size(); ++i)
 		{
-			notify("Player " + std::to_string(i + 1) + " wins!");
+			notify("Player " + std::to_string(lowestScoreIndices[i] + 1) + " wins!");
 		}
 	}
 
 	return ret;
 }
 
-void Game::decideNextPlayer()
+bool Game::decideNextPlayer()
 {
 	bool wrapped = false;
-	for (size_t i = players_[nextPlayer_]->isHuman() ? ((nextPlayer_ + 1) % 4) : nextPlayer_; i != nextPlayer_ || !wrapped; ++i)
+	for (size_t i = players_[nextPlayer_]->isHuman() ? ((nextPlayer_ + 1) % 4) : nextPlayer_;
+		i != nextPlayer_ || !wrapped || !players_[i]->isHuman();
+		++i)
 	{
+		if (isLastPlayerHandEmpty())
+		{
+			tallyScores();
+			return false;
+		}
+
 		if (i == players_.size())
 		{
 			i = 0;
@@ -189,7 +207,9 @@ void Game::decideNextPlayer()
 			break;
 		}
 	}
+
 	displayGameState();
+	return true;
 }
 
 void Game::resetRound()

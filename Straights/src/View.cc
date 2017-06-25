@@ -13,7 +13,11 @@ View::~View() {}
 
 void View::init()
 {
-	game_->init();
+	if (game_->init() == false)
+	{
+		return;
+	}
+
 	getUserInput();
 }
 

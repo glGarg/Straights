@@ -28,7 +28,7 @@ bool GameController::processCommand(Command& c)
 		break;
 	}
 
-	if (model_->isFirstPlayerHandEmpty())
+	if (model_->isLastPlayerHandEmpty())
 	{
 		model_->tallyScores();
 	}
