@@ -6,15 +6,18 @@ Game::Game() : Subject(), PLAYER_COUNT(4), firstTurn_(true), players_(PLAYER_COU
 
 void Game::init()
 {
-	for (int i = 0; i < PLAYER_COUNT; ++i)
+	if (firstTurn_ == true)
 	{
-		if (isPlayerHuman(i + 1))
+		for (int i = 0; i < PLAYER_COUNT; ++i)
 		{
-			players_[i] = new HumanPlayer();
-		}
-		else
-		{
-			players_[i] = new ComputerPlayer();
+			if (isPlayerHuman(i + 1))
+			{
+				players_[i] = new HumanPlayer();
+			}
+			else
+			{
+				players_[i] = new ComputerPlayer();
+			}
 		}
 	}
 
@@ -108,7 +111,7 @@ bool Game::isFirstPlayerHandEmpty() const
 bool Game::tallyScores()
 {
 	bool ret = true;
-	for (int i = 0; i < players_.size(); ++i)
+	for (size_t i = 0; i < players_.size(); ++i)
 	{
 		notify("Player " + std::to_string(i + 1) + "'s discards:" + players_[i]->getDiscardPile());
 
@@ -129,7 +132,7 @@ bool Game::tallyScores()
 	if (!ret)
 	{
 		std::vector<int> lowestScoreIndices = { 0 };
-		for (int i = 1; i < players_.size(); ++i)
+		for (size_t i = 1; i < players_.size(); ++i)
 		{
 			if (playerScores_[i] < playerScores_[lowestScoreIndices[0]])
 			{
@@ -143,7 +146,7 @@ bool Game::tallyScores()
 			}
 		}
 
-		for (int i = 0; i < lowestScoreIndices.size(); ++i)
+		for (size_t i = 0; i < lowestScoreIndices.size(); ++i)
 		{
 			notify("Player " + std::to_string(i + 1) + " wins!");
 		}
@@ -187,6 +190,25 @@ void Game::decideNextPlayer()
 		}
 	}
 	displayGameState();
+}
+
+void Game::resetRound()
+{
+	init();
+	firstTurn_ = true;
+	curSuit_ = Card::Suit(Card::Suit::SPADE);
+	curRank_ = Card::Rank(Card::Rank::SEVEN);
+	
+	for (auto &iter : cardsPlayed_)
+	{
+		iter.second.erase(iter.second.begin(), iter.second.end());
+	}
+
+	for (int i = 0; i < PLAYER_COUNT; ++i)
+	{
+		players_[i]->reset();
+		playerScores_[i] = 0;
+	}
 }
 
 bool Game::isLegalMove(Card &c) const

@@ -26,6 +26,7 @@ private:
 	bool isLegalMove(Card&) const;
 	void displayGameState() const;
 	void decideNextPlayer();
+	void resetRound();
 	const int PLAYER_COUNT;
 	bool firstTurn_;
 	size_t nextPlayer_;

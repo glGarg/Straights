@@ -18,6 +18,7 @@ public:
 	bool isHandEmpty() const;
 	int getScore() const;
 	std::string getDiscardPile() const;
+	void reset();
 private:
 	int hasCard(const Card&) const;
 	std::vector<Card *> hand_;
