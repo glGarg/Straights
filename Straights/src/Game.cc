@@ -34,7 +34,10 @@ void Game::init()
 		}
 		players_[i]->setHand(hand);
 	}
-	std::swap(players_[playerWith7OfSpades], players_[0]);
+
+	nextPlayer_ = playerWith7OfSpades;
+	decideNextPlayer();
+	notify("A new round begins. It's player " + std::to_string(nextPlayer_ + 1) + "'s turn to play.");
 }
 
 Game::~Game()
@@ -121,15 +124,49 @@ void Game::decideNextPlayer()
 			break;
 		}
 	}
+	displayGameState();
 }
 
 bool Game::isLegalMove(Card &c) const
 {
-	if (c.rank() == curRank_ || (c.suit() == curSuit_ && 
-								((curRank_.rank() != 0 && c.rank() == Card::Rank(curRank_.rank() - 1)) ||
-								(curRank_.rank() != 12 && c.rank() == Card::Rank(curRank_.rank() + 1)))))
+	if (c.rank() == curRank_ || (c.suit() == curSuit_ &&
+		((curRank_.rank() != 0 && c.rank() == Card::Rank(curRank_.rank() - 1)) ||
+		(curRank_.rank() != 12 && c.rank() == Card::Rank(curRank_.rank() + 1)))))
 	{
 		return true;
 	}
 	return false;
+}
+
+void Game::displayGameState() const
+{
+
+	notify("Cards on the table:");
+
+	for (auto &iter : cardsPlayed_)
+	{
+		std::string cardsInSuit = iter.first.toString() + ":";
+
+		for (size_t i = 0; i < iter.second.size(); ++i)
+		{
+			cardsInSuit += " " + Card::ranks[iter.second[i].rank().rank()];
+		}
+
+		notify(cardsInSuit);
+	}
+
+	std::vector<Card *> hand = players_[nextPlayer_]->getHand();
+	std::string legalPlays = "Legal plays:", yourHand = "Your hand:";
+
+	for (size_t i = 0; i < hand.size(); ++i)
+	{
+		yourHand += " " + std::string(*hand[i]);
+		
+		if (isLegalMove(*hand[i]))
+		{
+			legalPlays += " " + std::string(*hand[i]);
+		}
+	}
+
+	notify(yourHand + '\n' + legalPlays);
 }

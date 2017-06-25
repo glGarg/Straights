@@ -24,6 +24,23 @@ bool Card::Suit::operator==(const Card::Suit& s) const
 
 Card::Suit::operator int() const { return suit_; }
 
+std::string Card::Suit::toString() const
+{
+	switch (suit_) 
+	{
+		case 0:
+			return "Clubs";
+		case 1:
+			return "Diamonds";
+		case 2:
+			return "Hearts";
+		case 3:
+			return "Spades";
+		default:
+			return "Error";
+	}
+}
+
 Card::Rank Card::rank() const
 {
 	return rank_;

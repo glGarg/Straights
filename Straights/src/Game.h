@@ -18,9 +18,11 @@ public:
 	void discardCard(Card&);
 	void printDeck() const;
 	void rageQuit();
-	void decideNextPlayer();
+	
 private:
 	bool isLegalMove(Card&) const;
+	void displayGameState() const;
+	void decideNextPlayer();
 	const int PLAYER_COUNT;
 	size_t nextPlayer_;
 	Deck deck_;
