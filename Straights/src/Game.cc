@@ -169,7 +169,7 @@ void Game::decideNextPlayer()
 		if (players_[i]->isHuman() == false)
 		{
 			Card *discardedCard = nullptr;
-			const Card *cardPlayed = players_[i]->makeNextMove(curSuit_, curRank_, &discardedCard);
+			const Card *cardPlayed = players_[i]->makeNextMove(curSuit_, curRank_, discardedCard);
 			if (nullptr != cardPlayed)
 			{
 				curRank_ = Card::Rank(cardPlayed->rank().rank());
