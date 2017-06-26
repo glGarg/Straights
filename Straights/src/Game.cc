@@ -44,7 +44,15 @@ void Game::init()
 	nextPlayer_ = playerWith7OfSpades;
 	lastPlayer_ = (nextPlayer_ + PLAYER_COUNT - 1) % 4;
 	notify("A new round begins. It's player " + std::to_string(nextPlayer_ + 1) + "'s turn to play.");
-	decideNextPlayer();
+	
+	if (players_[nextPlayer_]->isHuman())
+	{
+		displayGameState();
+	}
+	else
+	{
+		decideNextPlayer();
+	}
 }
 
 Game::~Game()

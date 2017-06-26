@@ -1,6 +1,4 @@
 #include <iostream>
-#include "View.h"
-#include "GameController.h"
 #include "Game.h"
 
 int main(int argc, char **argv)

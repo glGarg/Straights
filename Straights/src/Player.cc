@@ -72,7 +72,7 @@ int Player::getScore() const
 	int score = 0;
 	for (size_t i = 0; i < discardPile_.size(); ++i)
 	{
-		score += discardPile_[i]->rank();
+		score += discardPile_[i]->rank() + 1;
 	}
 
 	return score;
