@@ -14,6 +14,7 @@ View::~View() {}
 void View::init()
 {
 	game_->init();
+	game_->beginRound();
 	if (game_->isOver() == true)
 	{
 		return;

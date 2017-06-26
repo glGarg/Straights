@@ -11,19 +11,43 @@ void Subject::subscribe(View *o)
 
 void Subject::unsubscribe(View *o) {}
 
-void Subject::notify(std::string notification) const
+void Subject::showMessage(std::string message) const
 {
 	for (auto &o : observers_)
 	{
-		o->displayMessage(notification);
+		o->showMessage(message);
 	}
 }
 
-void Subject::notify(std::vector<std::string>& info) const
+void Subject::showError(std::string error) const
 {
 	for (auto &o : observers_)
 	{
-		o->printDeck(info);
+		o->showError(error);
+	}
+}
+
+void Subject::showPlayerPlay(int id, std::string card) const
+{
+	for (auto &o : observers_)
+	{
+		o->showPlayerPlay(id, card);
+	}
+}
+
+void Subject::showPlayerDiscard(int id, std::string card) const
+{
+	for (auto &o : observers_)
+	{
+		o->showPlayerDiscard(id, card);
+	}
+}
+
+void Subject::printCards(std::vector<std::string>& deck) const
+{
+	for (auto &o : observers_)
+	{
+		o->printDeck(deck);
 	}
 }
 
@@ -31,9 +55,17 @@ bool Subject::isPlayerHuman(int id) const
 {
 	if (observers_.size() > 0) 
 	{
-		notify("Is player " + std::to_string(id) + " a human(h) or a computer(c)?");
+		showMessage("Is player " + std::to_string(id) + " a human(h) or a computer(c)?");
 		return observers_[0]->isPlayerHuman();
 	}
 
 	return true;
+}
+
+void Subject::showCardList(std::string label, std::vector<std::string>& cards) const
+{
+	for (auto &o : observers_)
+	{
+		o->showCardList(label, cards);
+	}
 }

@@ -11,9 +11,13 @@ public:
 	void subscribe(View *);
 	void unsubscribe(View *);
 protected:
-	void notify(std::string) const;
-	void notify(std::vector<std::string>&) const;
+	void showMessage(std::string) const;
+	void showError(std::string) const;
+	void showPlayerPlay(int, std::string) const;
+	void showPlayerDiscard(int, std::string) const;
+	void printCards(std::vector<std::string>&) const;
 	bool isPlayerHuman(int) const;
+	void showCardList(std::string, std::vector<std::string>&) const;
 private:
 	std::vector<View *> observers_;
 };

@@ -17,7 +17,7 @@ public:
 	virtual bool isHuman() const = 0;
 	bool isHandEmpty() const;
 	int getScore() const;
-	std::string getDiscardPile() const;
+	std::vector<std::string> getDiscardPile() const;
 	void reset();
 private:
 	int hasCard(const Card&) const;

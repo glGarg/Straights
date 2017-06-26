@@ -43,8 +43,11 @@ void Game::init()
 
 	nextPlayer_ = playerWith7OfSpades;
 	lastPlayer_ = (nextPlayer_ + PLAYER_COUNT - 1) % 4;
-	notify("A new round begins. It's player " + std::to_string(nextPlayer_ + 1) + "'s turn to play.");
-	
+}
+
+void Game::beginRound()
+{
+	showMessage("A new round begins. It's player " + std::to_string(nextPlayer_ + 1) + "'s turn to play.");
 	if (players_[nextPlayer_]->isHuman())
 	{
 		displayGameState();
@@ -52,6 +55,11 @@ void Game::init()
 	else
 	{
 		decideNextPlayer();
+	}
+
+	if (isLastPlayerHandEmpty() == true)
+	{
+		tallyScores();
 	}
 }
 
@@ -74,13 +82,13 @@ void Game::playCard(Card& card)
 		curRank_ = card.rank();
 		curSuit_ = card.suit();
 		cardsPlayed_[curSuit_].emplace_back(card);
-		outputPlayMove(nextPlayer_ + 1, card);
+		showPlayerPlay(nextPlayer_ + 1, card);
 		firstTurn_ = false;
 		decideNextPlayer();
 	}
 	else
 	{
-		notify("This is not a legal play.");
+		showError("This is not a legal play.");
 	}
 }
 
@@ -92,19 +100,19 @@ void Game::discardCard(Card& card)
 	{
 		if (isLegalMove(*hand[i]))
 		{
-			notify("You have a legal play. You may not discard.");
+			showError("You have a legal play. You may not discard.");
 			return;
 		}
 	}
 
 	if (p->discard(card) == true)
 	{
-		outputDiscardMove(nextPlayer_ + 1, std::string(card));
+		showPlayerDiscard(nextPlayer_ + 1, std::string(card));
 		decideNextPlayer();
 	}
 	else
 	{
-		notify("This is not a legal discard.");
+		showError("This is not a legal discard.");
 	}
 
 }
@@ -112,14 +120,13 @@ void Game::discardCard(Card& card)
 void Game::printDeck() const
 {
 	std::vector<std::string> cards(std::move(deck_.getCards()));
-	notify(cards);
+	printCards(cards);
 }
 
 void Game::rageQuit()
 {
-	Player *p = players_[nextPlayer_];
-	Player *temp = p;
-	p = new ComputerPlayer(std::move(p->getHand()));
+	Player *temp = players_[nextPlayer_];
+	players_[nextPlayer_] = new ComputerPlayer(std::move(temp->getHand()));
 	delete temp;
 	decideNextPlayer();
 }
@@ -131,26 +138,25 @@ bool Game::isLastPlayerHandEmpty() const
 
 void Game::tallyScores()
 {
-	bool roundNotDone = true;
 	for (size_t i = 0; i < players_.size(); ++i)
 	{
-		notify("Player " + std::to_string(i + 1) + "'s discards:" + players_[i]->getDiscardPile());
+		showCardList("Player " + std::to_string(i + 1) + "'s discards", std::move(players_[i]->getDiscardPile()));
 
 		int oldScore = playerScores_[i];
 		int scoreGained = players_[i]->getScore();
 		int newScore = oldScore + scoreGained;
 
-		notify("Player " + std::to_string(i + 1) + "'s score: " + std::to_string(oldScore) +
+		showMessage("Player " + std::to_string(i + 1) + "'s score: " + std::to_string(oldScore) +
 			" + " + std::to_string(scoreGained) + " = " + std::to_string(newScore));
 
 		playerScores_[i] = newScore;
-		if (roundNotDone == true)
+		if (isOver_ == false)
 		{
-			roundNotDone = !(playerScores_[i] >= 80);
+			isOver_ = playerScores_[i] >= 80;
 		}
 	}
 
-	if (!roundNotDone)
+	if (isOver_)
 	{
 		std::vector<size_t> lowestScoreIndices = { 0 };
 		for (size_t i = 1; i < players_.size(); ++i)
@@ -168,9 +174,12 @@ void Game::tallyScores()
 
 		for (size_t i = 0; i < lowestScoreIndices.size(); ++i)
 		{
-			notify("Player " + std::to_string(lowestScoreIndices[i] + 1) + " wins!");
+			showMessage("Player " + std::to_string(lowestScoreIndices[i] + 1) + " wins!");
 		}
-		isOver_ = true;
+	}
+	else
+	{
+		resetRound();
 	}
 }
 
@@ -188,7 +197,6 @@ void Game::decideNextPlayer()
 	{
 		if (isLastPlayerHandEmpty())
 		{
-			tallyScores();
 			return;
 		}
 
@@ -207,12 +215,12 @@ void Game::decideNextPlayer()
 				curRank_ = Card::Rank(cardPlayed->rank().rank());
 				curSuit_ = Card::Suit(cardPlayed->suit().suit());
 				cardsPlayed_[curSuit_].push_back(*cardPlayed);
-				outputPlayMove(i + 1, *cardPlayed);
+				showPlayerPlay(i + 1, *cardPlayed);
 				firstTurn_ = false;
 			}
 			else if (nullptr != discardedCard)
 			{
-				outputDiscardMove(i + 1, *discardedCard);
+				showPlayerDiscard(i + 1, *discardedCard);
 			}
 		}
 		else
@@ -231,7 +239,6 @@ void Game::resetRound()
 	firstTurn_ = true;
 	curSuit_ = Card::Suit(Card::Suit::SPADE);
 	curRank_ = Card::Rank(Card::Rank::SEVEN);
-	
 	for (auto &iter : cardsPlayed_)
 	{
 		iter.second.erase(iter.second.begin(), iter.second.end());
@@ -242,6 +249,8 @@ void Game::resetRound()
 		players_[i]->reset();
 		playerScores_[i] = 0;
 	}
+
+	beginRound();
 }
 
 bool Game::isLegalMove(Card &c) const
@@ -272,42 +281,29 @@ bool Game::isLegalMove(Card &c) const
 
 void Game::displayGameState() const
 {
-	notify("Cards on the table:");
+	showMessage("Cards on the table:");
 
 	for (auto &iter : cardsPlayed_)
 	{
-		std::string cardsInSuit = iter.first.toString() + ":";
-
+		std::vector<std::string> cardsInSuit;
 		for (size_t i = 0; i < iter.second.size(); ++i)
 		{
-			cardsInSuit += " " + std::string(1, Card::ranks[iter.second[i].rank()]);
+			cardsInSuit.emplace_back(std::string(1, Card::ranks[iter.second[i].rank()]));
 		}
-
-		notify(cardsInSuit);
+		showCardList(iter.first.toString(), cardsInSuit);
 	}
 
-	std::vector<Card *> hand = players_[nextPlayer_]->getHand();
-	std::string legalPlays = "Legal plays:", yourHand = "Your hand:";
-
-	for (size_t i = 0; i < hand.size(); ++i)
+	std::vector<Card *> cardsInHand = players_[nextPlayer_]->getHand();
+	std::vector<std::string> hand, legalPlays;
+	for (size_t i = 0; i < cardsInHand.size(); ++i)
 	{
-		yourHand += " " + std::string(*hand[i]);
-		
-		if (isLegalMove(*hand[i]))
+		hand.push_back(*cardsInHand[i]);
+		if (isLegalMove(*cardsInHand[i]))
 		{
-			legalPlays += " " + std::string(*hand[i]);
+			legalPlays.push_back(std::string(*cardsInHand[i]));
 		}
 	}
 
-	notify(yourHand + '\n' + legalPlays);
-}
-
-void Game::outputPlayMove(int id, std::string card) const
-{
-	notify("Player " + std::to_string(id) + " plays " + card + ".");
-}
-
-void Game::outputDiscardMove(int id, std::string card) const
-{
-	notify("Player " + std::to_string(id) + " discards " + card + ".");
+	showCardList("Your hand", hand);
+	showCardList("Legal plays", legalPlays);
 }

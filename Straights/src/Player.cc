@@ -78,13 +78,13 @@ int Player::getScore() const
 	return score;
 }
 
-std::string Player::getDiscardPile() const
+std::vector<std::string> Player::getDiscardPile() const
 {
-	std::string discardedCards;
+	std::vector<std::string> discardedCards;
 
 	for (size_t i = 0; i < discardPile_.size(); ++i) 
 	{
-		discardedCards += " " + std::string(*discardPile_[i]);
+		discardedCards.push_back(*discardPile_[i]);
 	}
 	return discardedCards;
 }
