@@ -128,6 +128,7 @@ void Game::rageQuit()
 	Player *temp = players_[nextPlayer_];
 	players_[nextPlayer_] = new ComputerPlayer(std::move(temp->getHand()));
 	delete temp;
+	showMessage("Player " + std::to_string(nextPlayer_ + 1) + " ragequits. A computer will now take over.");
 	decideNextPlayer();
 }
 
