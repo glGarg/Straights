@@ -6,9 +6,9 @@
 class View
 {
 public:
-	View(GameController *, Game *);
+	View();
 	virtual ~View();
-	void init();
+	virtual void init() = 0;
 	virtual void showMessage(std::string) const = 0;
 	virtual void showError(std::string) const = 0;
 	virtual void showPlayerPlay(int, std::string) const = 0;
@@ -16,8 +16,5 @@ public:
 	virtual void printDeck(const std::vector<std::string>&) const = 0;
 	virtual bool isPlayerHuman() const = 0;
 	virtual void showCardList(std::string, std::vector<std::string>&) const = 0;
-	void getUserInput();
-private:
-	GameController *controller_;
-	Game *game_;
+	virtual void getUserInput() = 0;
 };

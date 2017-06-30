@@ -1,8 +1,27 @@
 #include "TextView.h"
+#include "Game.h"
 
-TextView::TextView(GameController *controller, Game *game) : View(controller, game) {}
+TextView::TextView(GameController *controller, Game *game) : controller_(controller), game_(game)
+{
+	if (nullptr != game_)
+	{
+		game_->subscribe(this);
+	}
+}
 
 TextView::~TextView() {}
+
+void TextView::init()
+{
+	game_->init();
+	game_->beginRound();
+	if (game_->isOver() == true)
+	{
+		return;
+	}
+
+	getUserInput();
+}
 
 void TextView::showMessage(std::string message) const
 {
@@ -43,7 +62,7 @@ void TextView::printDeck(const std::vector<std::string>& cards) const
 void TextView::showCardList(std::string label, std::vector<std::string>& cards) const
 {
 	std::string cardsIDs = label + ":";
-	for (int i = 0; i < cards.size(); ++i)
+	for (size_t i = 0; i < cards.size(); ++i)
 	{
 		cardsIDs += " " + cards[i];
 	}
@@ -70,5 +89,26 @@ bool TextView::isPlayerHuman() const
 		}
 
 		return true;
+	}
+}
+
+void TextView::getUserInput()
+{
+	std::cin.ignore();
+	while (true)
+	{
+		Command c;
+		std::cout << ">";
+		std::cin >> c;
+
+		if (std::cin.fail())
+		{
+			break;
+		}
+
+		if (controller_->processCommand(c) == false)
+		{
+			break;
+		}
 	}
 }

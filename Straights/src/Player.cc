@@ -40,7 +40,7 @@ const Card *Player::makeNextMove(Card *&discarded)
 
 bool Player::play(const Card& c)
 {
-	int index = hasCard(c);
+	int index = getCardIndex(c);
 	if (index != -1)
 	{
 		hand_.erase(hand_.begin() + index);
@@ -51,7 +51,7 @@ bool Player::play(const Card& c)
 
 bool Player::discard(const Card& c)
 {
-	int index = hasCard(c);
+	int index = getCardIndex(c);
 	if (index != -1)
 	{
 		discardPile_.push_back(hand_[index]);
@@ -93,7 +93,7 @@ void Player::reset()
 	discardPile_.erase(discardPile_.begin(), discardPile_.end());
 }
 
-int Player::hasCard(const Card& card) const
+int Player::getCardIndex(const Card& card) const
 {
 	for (size_t i = 0; i < hand_.size(); ++i)
 	{

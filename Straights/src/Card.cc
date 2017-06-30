@@ -86,13 +86,12 @@ ostream& operator<<(ostream& out, const Card& c)
 
 istream& operator>>(istream& in, Card::Rank& r)
 {
-	static string ranks = "A23456789TJQK";
 	char c;
 	in >> c;
 	assert (!in.fail());
 
 	//Read in the rank, make sure it's valid
-    size_t index = ranks.find(c);
+    size_t index = Card::ranks.find(c);
 	assert (index != string::npos);
 	r = Card::Rank(index);
 	return in;
@@ -100,13 +99,12 @@ istream& operator>>(istream& in, Card::Rank& r)
 
 istream & operator>>(istream& in, Card::Suit& s)
 {
-	static string suits = "CDHS";
 	char c;
 	in >> c;
 	assert (!in.fail());
 
 	// Read in the suit, make sure it's valid
-    size_t index = suits.find(c);
+    size_t index = Card::suits.find(c);
 	assert (index != string::npos);
 	s = Card::Suit(index);
 	return in;

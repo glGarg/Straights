@@ -21,7 +21,7 @@ public:
 	std::vector<std::string> getDiscardPile() const;
 	void reset();
 private:
-	int hasCard(const Card&) const;
+	int getCardIndex(const Card&) const;
 	std::vector<Card *> hand_;
 	std::vector<Card *> discardPile_;
 };
