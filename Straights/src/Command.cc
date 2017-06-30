@@ -17,7 +17,7 @@ istream& operator>>(istream& in, Command& c)
 	stringstream ss(str);
 	string cmd = "error";
 	ss >> cmd;
-	
+
 	if (cmd == "play")
 	{
 		c.type = Command::Type::PLAY;
@@ -40,8 +40,18 @@ istream& operator>>(istream& in, Command& c)
 	{
 		c.type = Command::Type::RAGEQUIT;
 	}
+	else
+	{
+		throw Command::IllegalCommandException(cmd);
+	}
 	
-	assert(!in.fail() && !ss.fail() && c.type != Command::Type::BAD_COMMAND);
+	assert(!in.fail() && !ss.fail());
 	
 	return in;
 }
+
+Command::CommandException::CommandException(const std::string message) : message_(message) {}
+
+std::string Command::CommandException::what() const { return message_; }
+
+Command::IllegalCommandException::IllegalCommandException(std::string command) : CommandException("Illegal command " + command + " entered.") {}

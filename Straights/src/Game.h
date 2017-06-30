@@ -23,6 +23,21 @@ public:
 	void tallyScores();
 	bool isOver() const;
 	static bool isLegalMove(Card&);
+	
+	class GameException
+	{
+	public:
+		GameException(const std::string);
+		std::string what() const;
+	private:
+		const std::string message_;
+	};
+
+	class IllegalDiscardException : public GameException
+	{
+	public:
+		IllegalDiscardException(Card&);
+	};
 private:
 	void displayGameState() const;
 	void decideNextPlayer();

@@ -115,7 +115,7 @@ void Game::discardCard(Card& card)
 	}
 	else
 	{
-		showError("This is not a legal discard.");
+		throw IllegalDiscardException(card);
 	}
 
 }
@@ -307,3 +307,9 @@ void Game::displayGameState() const
 	showCardList("Your hand", hand);
 	showCardList("Legal plays", legalPlays);
 }
+
+Game::GameException::GameException(const std::string message) : message_(message) {}
+
+std::string Game::GameException::what() const { return message_; }
+
+Game::IllegalDiscardException::IllegalDiscardException(Card& card) : GameException("Your hand doesn't contain " + std::string(card) + ".") {}

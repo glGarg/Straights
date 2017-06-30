@@ -99,8 +99,16 @@ void TextView::getUserInput()
 	{
 		Command c;
 		std::cout << ">";
-		std::cin >> c;
-
+		
+		try
+		{
+			std::cin >> c;
+		}
+		catch (Command::CommandException &e)
+		{
+			std::cout << e.what() << std::endl;
+		}
+		
 		if (std::cin.fail())
 		{
 			break;

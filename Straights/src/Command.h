@@ -20,9 +20,24 @@ public:
 
 	Type type;
 	Card card;
-	
+
 	Command();
 	// Ensures: Command is set to invalid state, card is set to AC
+
+	class CommandException
+	{
+	public:
+		CommandException(const std::string);
+		std::string what() const;
+	private:
+		const std::string message_;
+	};
+
+	class IllegalCommandException : public CommandException
+	{
+	public:
+		IllegalCommandException(std::string);
+	};
 };
 
 std::istream & operator>>(std::istream&, Command&);
