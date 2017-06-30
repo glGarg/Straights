@@ -22,21 +22,19 @@ public:
 	bool isLastPlayerHandEmpty() const;
 	void tallyScores();
 	bool isOver() const;
+	static bool isLegalMove(Card&);
 private:
-	bool isLegalMove(Card&) const;
 	void displayGameState() const;
 	void decideNextPlayer();
 	void resetRound();
-	const int PLAYER_COUNT;
-	bool firstTurn_;
-	bool isOver_;
+	static bool firstTurn_;
+	
+	static std::map<Card::Suit, std::vector<Card>> cardsPlayed_;
+	static const int PLAYER_COUNT;
+	static bool isOver_;
 	size_t nextPlayer_;
 	size_t lastPlayer_;
-	Deck deck_;
-	Card::Rank curRank_;
-	Card::Suit curSuit_;
 	std::vector<Player *> players_;
 	std::vector<int> playerScores_;
-	std::map<Card::Suit, std::vector<Card>> cardsPlayed_;
+	Deck deck_;
 };
-

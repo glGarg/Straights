@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <map>
 #include "Card.h"
 
 class Player
@@ -11,7 +12,7 @@ public:
 	virtual ~Player();
 	void setHand(std::vector<Card *>&);
 	std::vector<Card *> getHand();
-	const Card *makeNextMove(const Card::Suit&, const Card::Rank&, Card *&);
+	const Card *makeNextMove(Card *&);
 	bool play(const Card&);
 	bool discard(const Card&);
 	virtual bool isHuman() const = 0;

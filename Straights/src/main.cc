@@ -7,7 +7,7 @@ int main(int argc, char **argv)
 	{
 		seed = static_cast<int>(*argv[1]);
 	}
-
+	
 	Game game;
 	GameController controller(&game);
 	TextView view(&controller, &game);

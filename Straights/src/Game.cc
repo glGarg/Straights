@@ -1,10 +1,15 @@
 #include "Game.h"
 
-Game::Game() : Subject(), PLAYER_COUNT(4), firstTurn_(true), isOver_(false), 
-			   players_(PLAYER_COUNT), playerScores_(PLAYER_COUNT), curRank_(Card::Rank::SEVEN),
-			   curSuit_(Card::Suit::SPADE), nextPlayer_(0), lastPlayer_(0),
-			   cardsPlayed_{{Card::Suit(0), {}}, {Card::Suit(1), {}},
-							{Card::Suit(2), {}}, {Card::Suit(3), {}}} {}
+Game::Game() : Subject(), players_(4), playerScores_(PLAYER_COUNT), nextPlayer_(0), lastPlayer_(0) {}
+
+bool Game::firstTurn_ = true, Game::isOver_ = false;
+
+const int Game::PLAYER_COUNT = 4;
+
+std::map<Card::Suit, std::vector<Card>> Game::cardsPlayed_ = std::map<Card::Suit, std::vector<Card>> {{Card::Suit(0), {}}, 
+																									  {Card::Suit(1), {}},
+																									  {Card::Suit(2), {}}, 
+																									  {Card::Suit(3), {}}};
 
 void Game::init()
 {
@@ -79,9 +84,7 @@ void Game::playCard(Card& card)
 	Player *p = players_[nextPlayer_];
 	if (isLegalMove(card) && p->play(card))
 	{
-		curRank_ = card.rank();
-		curSuit_ = card.suit();
-		cardsPlayed_[curSuit_].emplace_back(card);
+		cardsPlayed_[card.suit()].emplace_back(card);
 		showPlayerPlay(nextPlayer_ + 1, card);
 		firstTurn_ = false;
 		decideNextPlayer();
@@ -210,12 +213,10 @@ void Game::decideNextPlayer()
 		if (players_[i]->isHuman() == false)
 		{
 			Card *discardedCard = nullptr;
-			const Card *cardPlayed = players_[i]->makeNextMove(curSuit_, curRank_, discardedCard);
+			const Card *cardPlayed = players_[i]->makeNextMove(discardedCard);
 			if (nullptr != cardPlayed)
 			{
-				curRank_ = Card::Rank(cardPlayed->rank().rank());
-				curSuit_ = Card::Suit(cardPlayed->suit().suit());
-				cardsPlayed_[curSuit_].push_back(*cardPlayed);
+				cardsPlayed_[cardPlayed->suit()].push_back(*cardPlayed);
 				showPlayerPlay(i + 1, *cardPlayed);
 				firstTurn_ = false;
 			}
@@ -238,8 +239,6 @@ void Game::resetRound()
 {
 	init();
 	firstTurn_ = true;
-	curSuit_ = Card::Suit(Card::Suit::SPADE);
-	curRank_ = Card::Rank(Card::Rank::SEVEN);
 	for (auto &iter : cardsPlayed_)
 	{
 		iter.second.erase(iter.second.begin(), iter.second.end());
@@ -254,7 +253,7 @@ void Game::resetRound()
 	beginRound();
 }
 
-bool Game::isLegalMove(Card &c) const
+bool Game::isLegalMove(Card &c)
 {
 	if (((firstTurn_ && c.suit().suit() == Card::Suit::SPADE) || !firstTurn_) && c.rank().rank() == Card::Rank::SEVEN)
 	{
@@ -267,8 +266,8 @@ bool Game::isLegalMove(Card &c) const
 			for (size_t i = 0; i < iter.second.size(); ++i)
 			{
 				if (c.suit() == iter.second[i].suit() &&
-				   ((curRank_.rank() != 0 && c.rank() == Card::Rank(curRank_.rank() - 1)) ||
-				   (curRank_.rank() != 12 && c.rank() == Card::Rank(curRank_.rank() + 1))))
+				   ((iter.second[i].rank() != 0 && c.rank() == Card::Rank(iter.second[i].rank() - 1)) ||
+				    (iter.second[i].rank() != 12 && c.rank() == Card::Rank(iter.second[i].rank() + 1))))
 				{
 					return true;
 				}

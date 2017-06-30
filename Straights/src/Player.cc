@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Game.h"
 
 Player::Player() {}
 
@@ -18,14 +19,12 @@ std::vector<Card *> Player::getHand()
 	return hand_;
 }
 
-const Card *Player::makeNextMove(const Card::Suit& suit, const Card::Rank& rank, Card *&discarded)
+const Card *Player::makeNextMove(Card *&discarded)
 {
 	// find a legal card to play for given suit and rank
 	for (size_t i = 0; i < hand_.size(); ++i)
 	{
-		if (hand_[i]->rank() == rank || (hand_[i]->suit() == suit &&
-			((rank.rank() != 0 && hand_[i]->rank().rank() == (rank.rank() - 1)) ||
-			(rank.rank() != 12 && hand_[i]->rank().rank() == (rank.rank() + 1)))))
+		if (Game::isLegalMove(*hand_[i]))
 		{
 			Card *played = hand_[i];
 			hand_.erase(hand_.begin() + i);
