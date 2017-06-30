@@ -79,6 +79,7 @@ Game::~Game()
 	}
 }
 
+// human player plays a card
 void Game::playCard(Card& card)
 {
 	Player *p = players_[nextPlayer_];
@@ -95,6 +96,7 @@ void Game::playCard(Card& card)
 	}
 }
 
+// human player discards a card
 void Game::discardCard(Card& card)
 {
 	Player *p = players_[nextPlayer_];
@@ -126,6 +128,7 @@ void Game::printDeck() const
 	printCards(cards);
 }
 
+// human player ragequits; replace them with a computer player
 void Game::rageQuit()
 {
 	Player *temp = players_[nextPlayer_];
@@ -140,6 +143,8 @@ bool Game::isLastPlayerHandEmpty() const
 	return players_[lastPlayer_]->isHandEmpty();
 }
 
+// sum up the scores at the end of a round
+// end the game if score limit is reached
 void Game::tallyScores()
 {
 	for (size_t i = 0; i < players_.size(); ++i)
@@ -279,6 +284,7 @@ bool Game::isLegalMove(Card &c)
 	
 }
 
+// provide human player with information about the current game state
 void Game::displayGameState() const
 {
 	showMessage("Cards on the table:");

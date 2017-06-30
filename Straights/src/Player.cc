@@ -19,6 +19,7 @@ std::vector<Card *> Player::getHand()
 	return hand_;
 }
 
+// for a computer player, determine and make the next move
 const Card *Player::makeNextMove(Card *&discarded)
 {
 	// find a legal card to play for given suit and rank
@@ -38,6 +39,7 @@ const Card *Player::makeNextMove(Card *&discarded)
 	return nullptr;
 }
 
+// "play" function for a human player
 bool Player::play(const Card& c)
 {
 	int index = getCardIndex(c);
@@ -49,6 +51,7 @@ bool Player::play(const Card& c)
 	return false;
 }
 
+// "discard" function for a human player
 bool Player::discard(const Card& c)
 {
 	int index = getCardIndex(c);
@@ -66,6 +69,7 @@ bool Player::isHandEmpty() const
 	return hand_.size() == 0;
 }
 
+// get a player's score based on the player's discard pile for the given round
 int Player::getScore() const
 {
 	int score = 0;

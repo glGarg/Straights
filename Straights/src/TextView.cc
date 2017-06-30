@@ -70,6 +70,8 @@ void TextView::showCardList(std::string label, std::vector<std::string>& cards) 
 	std::cout << cardsIDs << std::endl;
 }
 
+// checking inital input 
+// i.e. 'c' for computer, 'h' for human
 bool TextView::isPlayerHuman() const
 {
 	char c;
@@ -92,6 +94,7 @@ bool TextView::isPlayerHuman() const
 	}
 }
 
+// get input from a human player
 void TextView::getUserInput()
 {
 	std::cin.ignore();
