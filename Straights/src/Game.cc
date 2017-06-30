@@ -144,7 +144,8 @@ void Game::tallyScores()
 {
 	for (size_t i = 0; i < players_.size(); ++i)
 	{
-		showCardList("Player " + std::to_string(i + 1) + "'s discards", std::move(players_[i]->getDiscardPile()));
+		std::vector<std::string> discardPile = players_[i]->getDiscardPile();
+		showCardList("Player " + std::to_string(i + 1) + "'s discards", discardPile);
 
 		int oldScore = playerScores_[i];
 		int scoreGained = players_[i]->getScore();
@@ -247,7 +248,6 @@ void Game::resetRound()
 	for (int i = 0; i < PLAYER_COUNT; ++i)
 	{
 		players_[i]->reset();
-		playerScores_[i] = 0;
 	}
 
 	beginRound();

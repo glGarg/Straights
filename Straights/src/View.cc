@@ -29,11 +29,14 @@ void View::getUserInput()
 	while (true)
 	{
 		Command c;
+		std::cout << ">";
 		std::cin >> c;
+		
 		if (std::cin.fail())
 		{
 			break;
 		}
+		
 		if(controller_->processCommand(c) == false)
 		{
 			break;

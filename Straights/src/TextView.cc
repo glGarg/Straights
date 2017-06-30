@@ -54,6 +54,7 @@ void TextView::showCardList(std::string label, std::vector<std::string>& cards) 
 bool TextView::isPlayerHuman() const
 {
 	char c;
+	std::cout << ">";
 	std::cin >> c;
 
 	if (std::cin.fail())
