@@ -2,9 +2,9 @@
 
 ComputerPlayer::ComputerPlayer() {}
 
-ComputerPlayer::ComputerPlayer(std::vector<Card *>& hand) : Player(hand) {}
+ComputerPlayer::ComputerPlayer(std::vector<Card *>& hand, std::vector<Card *>& discardPile) : Player(hand, discardPile) {}
 
-ComputerPlayer::ComputerPlayer(std::vector<Card *>&& hand) : Player(std::move(hand)) {}
+ComputerPlayer::ComputerPlayer(std::vector<Card *>&& hand, std::vector<Card *>&& discardPile) : Player(std::move(hand), std::move(discardPile)) {}
 
 ComputerPlayer::~ComputerPlayer() {}
 

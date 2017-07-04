@@ -133,7 +133,7 @@ void Game::printDeck() const
 void Game::rageQuit()
 {
 	Player *temp = players_[nextPlayer_];
-	players_[nextPlayer_] = new ComputerPlayer(std::move(temp->getHand()));
+	players_[nextPlayer_] = new ComputerPlayer(std::move(temp->getHand()), std::move(temp->getDiscardPile()));
 	delete temp;
 	showMessage("Player " + std::to_string(nextPlayer_ + 1) + " ragequits. A computer will now take over.");
 	decideNextPlayer();
@@ -150,7 +150,7 @@ void Game::tallyScores()
 {
 	for (size_t i = 0; i < players_.size(); ++i)
 	{
-		std::vector<std::string> discardPile = players_[i]->getDiscardPile();
+		std::vector<std::string> discardPile = players_[i]->getDiscardPileStr();
 		showCardList("Player " + std::to_string(i + 1) + "'s discards", discardPile);
 
 		int oldScore = playerScores_[i];

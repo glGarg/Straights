@@ -3,9 +3,9 @@
 
 Player::Player() {}
 
-Player::Player(std::vector<Card *>& hand) : hand_(hand) {}
+Player::Player(std::vector<Card *>& hand, std::vector<Card *>& discardPile) : hand_(hand), discardPile_(discardPile) {}
 
-Player::Player(std::vector<Card *>&& hand) : hand_(std::move(hand)) {}
+Player::Player(std::vector<Card *>&& hand, std::vector<Card *>&& discardPile) : hand_(std::move(hand)), discardPile_(std::move(discardPile)) {}
 
 Player::~Player() {}
 
@@ -17,6 +17,11 @@ void Player::setHand(std::vector<Card *>& hand)
 std::vector<Card *> Player::getHand()
 {
 	return hand_;
+}
+
+std::vector<Card*> Player::getDiscardPile()
+{
+	return discardPile_;
 }
 
 // for a computer player, determine and make the next move
@@ -81,7 +86,7 @@ int Player::getScore() const
 	return score;
 }
 
-std::vector<std::string> Player::getDiscardPile() const
+std::vector<std::string> Player::getDiscardPileStr() const
 {
 	std::vector<std::string> discardedCards;
 
