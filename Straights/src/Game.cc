@@ -1,4 +1,5 @@
 #include "Game.h"
+#include <algorithm>
 
 Game::Game() : Subject(), players_(4), playerScores_(PLAYER_COUNT), nextPlayer_(0), lastPlayer_(0) {}
 
@@ -85,7 +86,7 @@ void Game::playCard(Card& card)
 	Player *p = players_[nextPlayer_];
 	if (isLegalMove(card) && p->play(card))
 	{
-		cardsPlayed_[card.suit()].emplace_back(card);
+		cardsPlayed_[card.suit()].insert(std::upper_bound(cardsPlayed_[card.suit()].begin(), cardsPlayed_[card.suit()].end(), card), card);
 		showPlayerPlay(nextPlayer_ + 1, card);
 		firstTurn_ = false;
 		decideNextPlayer();

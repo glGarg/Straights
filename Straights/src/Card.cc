@@ -61,6 +61,8 @@ bool Card::operator==(const Card& c) const
 	return (suit().suit() == c.suit().suit() && rank().rank() == c.rank().rank());
 }
 
+bool Card::operator<(const Card& c) const { return rank_.rank() < c.rank().rank(); }
+
 Card::operator std::string() const
 {
 	return std::string(1, Card::ranks[rank_.rank()]) + std::string(1, Card::suits[suit_.suit()]);
