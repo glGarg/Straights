@@ -43,4 +43,3 @@ bool GameController::processCommand(Command& c)
 
 	return true;
 }
-

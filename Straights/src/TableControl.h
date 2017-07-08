@@ -9,11 +9,13 @@ class GuiView;
 class TableControl : public Gtk::Box
 {
 public:
-    TableControl(GuiView *);
+    TableControl(GuiView *, DeckGui *);
     ~TableControl();
-    void initTable(DeckGui *);
+    void initTable();
+    void showCard(std::string);
 private:
     std::map<std::string, Gtk::Image *> cardImages_;
 	std::vector<Gtk::Box *> suitRows_;
     GuiView *view_;
+    DeckGui *deckGui_;
 };

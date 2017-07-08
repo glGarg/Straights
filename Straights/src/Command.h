@@ -22,7 +22,6 @@ public:
 	Card card;
 
 	Command();
-	Command(Type, Card);
 	// Ensures: Command is set to invalid state, card is set to AC
 
 	class CommandException

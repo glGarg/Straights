@@ -51,6 +51,14 @@ void Subject::printCards(std::vector<std::string>& deck) const
 	}
 }
 
+void Subject::updateDisplay() const
+{
+	for (auto &o : observers_)
+	{
+		o->updateDisplay();
+	}
+}
+
 bool Subject::isPlayerHuman(int id) const
 {
 	if (observers_.size() > 0) 

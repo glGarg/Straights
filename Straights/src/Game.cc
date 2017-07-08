@@ -328,6 +328,7 @@ void Game::displayGameState() const
 
 	showCardList("Your hand", hand);
 	showCardList("Legal plays", legalPlays);
+	updateDisplay();
 }
 
 Game::GameException::GameException(const std::string message) : message_(message) {}

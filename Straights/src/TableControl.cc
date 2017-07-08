@@ -1,9 +1,10 @@
 #include "TableControl.h"
 #include "GuiView.h"
 
-TableControl::TableControl(GuiView *view) : Gtk::Box(Gtk::ORIENTATION_VERTICAL), view_(view),
-                                            suitRows_{new Gtk::Box(), new Gtk::Box(),
-											          new Gtk::Box(), new Gtk::Box()}
+TableControl::TableControl(GuiView *view, DeckGui *deckGui) : Gtk::Box(Gtk::ORIENTATION_VERTICAL), view_(view),
+                                            				  suitRows_{new Gtk::Box(), new Gtk::Box(),
+											          					new Gtk::Box(), new Gtk::Box()},
+															  deckGui_(deckGui)
 {
     for (int i = 0; i < 4; ++i)
 	{
@@ -34,15 +35,20 @@ TableControl::~TableControl()
 	}
 }
 
-void TableControl::initTable(DeckGui *deckGui)
+void TableControl::initTable()
 {
 	for (int i = 0; i < Card::ranks.size(); ++i)
 	{
 		for (int j = 0; j < Card::suits.size(); ++j)
 		{
 			const std::string card = std::string(1, Card::ranks[i]) + std::string(1, Card::suits[j]);
-			cardImages_[card]->set((*deckGui)[card]);
+			cardImages_[card]->set((*deckGui_)["nothing"]);
 			suitRows_[j]->pack_start(*cardImages_[card]);
 		}
 	}
+}
+
+void TableControl::showCard(std::string card)
+{
+	cardImages_[card]->set((*deckGui_)[card]);
 }

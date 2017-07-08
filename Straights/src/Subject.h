@@ -18,6 +18,7 @@ protected:
 	void printCards(std::vector<std::string>&) const;
 	bool isPlayerHuman(int) const;
 	void showCardList(std::string, std::vector<std::string>&) const;
+	void updateDisplay() const;
 private:
 	std::vector<View *> observers_;
 };

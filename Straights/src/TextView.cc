@@ -33,12 +33,12 @@ void TextView::showError(std::string error) const
 	std::cout << error << std::endl;
 }
 
-void TextView::showPlayerPlay(int id, std::string card) const
+void TextView::showPlayerPlay(int id, std::string card)
 {
 	std::cout << "Player " << std::to_string(id) << " plays " << card + "." << std::endl;
 }
 
-void TextView::showPlayerDiscard(int id, std::string card) const
+void TextView::showPlayerDiscard(int id, std::string card)
 {
 	std::cout << "Player " << std::to_string(id) << " discards " << card + "." << std::endl;
 }

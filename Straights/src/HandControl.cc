@@ -3,7 +3,7 @@
 #include "DeckGui.h"
 
 HandControl::HandControl(GuiView *view, int playerIndex) : Gtk::Box(Gtk::ORIENTATION_VERTICAL), view_(view), cardBoxes_(13), cardButtons_(13), cardImages_(13),
-                                                           handBox_(Gtk::ORIENTATION_HORIZONTAL), playerLabel_("Player " + std::to_string(playerIndex) + "'s hand")
+                                                           handBox_(Gtk::ORIENTATION_HORIZONTAL), playerLabel_("Player " + std::to_string(playerIndex + 1) + "'s hand")
 {
     for (int i = 0; i < 13; ++i)
 	{

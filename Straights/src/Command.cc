@@ -8,8 +8,6 @@ using std::stringstream;
 
 Command::Command() : type(Command::Type::BAD_COMMAND), card(Card::Rank(0), Card::Suit(0)) {}
 
-Command::Command(Type t, Card c) : type(type), card(c) {}
-
 istream& operator>>(istream& in, Command& c)
 {
 	c.type = Command::Type::BAD_COMMAND;

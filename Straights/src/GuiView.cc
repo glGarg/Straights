@@ -1,9 +1,9 @@
 #include "GuiView.h"
 #include "Game.h"
 
-GuiView::GuiView(GameController *controller, Game *game) : Gtk::Window(), controller_(controller), game_(game),
+GuiView::GuiView(GameController *controller, Game *game) : Gtk::Window(), controller_(controller), game_(game), curHandControl_(nullptr),
 														   playersBox_(), handBox_(), windowPanels_(Gtk::ORIENTATION_VERTICAL), deckGui_(new DeckGui()), 
-														   toolBarControl_(this), tableControl_(this), handControls_(4),
+														   toolBarControl_(this), tableControl_(this, deckGui_), handControls_(4),
 														   playerControls_{new PlayerControl(this, 0), new PlayerControl(this, 1),
 														   				   new PlayerControl(this, 2), new PlayerControl(this, 3)}
 {
@@ -28,7 +28,7 @@ GuiView::GuiView(GameController *controller, Game *game) : Gtk::Window(), contro
 	}
 
 	initPlayerControls();
-	tableControl_.initTable(deckGui_);
+	tableControl_.initTable();
 }
 
 void GuiView::initPlayerControls() {}
@@ -54,9 +54,9 @@ void GuiView::init()
 
 	show_all();
 
-	for(int i = 0; i < 4; ++i)
+	for (int i = 0; i < 4; ++i)
 	{
-		if(game_->isPlayerIndexHuman(i))
+		if (game_->isPlayerIndexHuman(i))
 		{
 			std::vector<std::string> hand = game_->getPlayerHandStr(i);
 			handControls_[i] = new HandControl(this, i);
@@ -66,28 +66,39 @@ void GuiView::init()
 		}
 	}
 
-	handControls_[game_->getNextPlayerIndex()]->show_all();
+	size_t nextPlayerIndex = game_->getNextPlayerIndex();
+	playerControls_[nextPlayerIndex]->enableRage();
+	curHandControl_ = handControls_[nextPlayerIndex];
+	curHandControl_->show_all();
 	handBox_.show();
 }
 
 void GuiView::showMessage(std::string message) const
 {
+	//Gtk::MessageDialog dialog(message, false, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK);
+	//dialog.set_secondary_text(message);
+	//dialog.run();
 	std::cout << message << std::endl;
 }
 
 void GuiView::showError(std::string error) const
 {
+	//Gtk::MessageDialog dialog(error, false, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK);
+	//dialog.set_secondary_text(error);
+	//dialog.run();
 	std::cout << error << std::endl;
 }
 
-void GuiView::showPlayerPlay(int id, std::string card) const
+void GuiView::showPlayerPlay(int id, std::string card)
 {
+	tableControl_.showCard(card);
 	std::cout << "Player " << std::to_string(id) << " plays " << card + "." << std::endl;
 }
 
-void GuiView::showPlayerDiscard(int id, std::string card) const
+void GuiView::showPlayerDiscard(int id, std::string card)
 {
 	std::cout << "Player " << std::to_string(id) << " discards " << card + "." << std::endl;
+	playerControls_[id - 1]->setDiscardCount(playerControls_[id - 1]->getDiscardCount() + 1);
 }
 
 void GuiView::printDeck(const std::vector<std::string>& cards) const
@@ -117,6 +128,22 @@ void GuiView::showCardList(std::string label, std::vector<std::string>& cards) c
 	std::cout << cardsIDs << std::endl;
 }
 
+void GuiView::updateDisplay()
+{
+	if(curHandControl_ != nullptr)
+	{
+		curHandControl_->hide();
+	}
+
+	size_t nextPlayerIndex = game_->getNextPlayerIndex();
+	curHandControl_ = handControls_[nextPlayerIndex];
+	if(nullptr != curHandControl_)
+	{
+		curHandControl_->show_all();
+		playerControls_[nextPlayerIndex]->enableRage();
+	}
+}
+
 bool GuiView::isPlayerHuman() const
 {
 	static int index = 0;
@@ -125,52 +152,27 @@ bool GuiView::isPlayerHuman() const
 	index = (index + 1) % 4;
 
 	int result = dialog.run();
-	switch(result)
+	switch (result)
 	{
 		case(Gtk::RESPONSE_YES):
-		{
 			return true;
-		}
 		default:
-		{
 			return false;
-		}
 	}
 	return true;
 }
 
-// get input from a human player
-void GuiView::getUserInput()
+void GuiView::getUserInput() {}
+
+void GuiView::playerRageQuit(int playerId)
 {
-	std::cin.ignore();
-	while (true)
+	Command c;
+	c.type = Command::Type::RAGEQUIT;
+	if(nullptr != curHandControl_)
 	{
-		Command c;
-		std::cout << ">";
-		
-		try
-		{
-			std::cin >> c;
-		}
-		catch (Command::CommandException &e)
-		{
-			std::cout << e.what() << std::endl;
-		}
-		
-		if (std::cin.fail())
-		{
-			break;
-		}
-
-		if (controller_->processCommand(c) == false)
-		{
-			break;
-		}
+		delete curHandControl_;
+		curHandControl_ = nullptr;
 	}
-}
 
-void GuiView::playerRageQuit(int playerId) const
-{
-	Command c = Command(Command::Type::RAGEQUIT, Card(0, 0));
 	controller_->processCommand(c);
 }
