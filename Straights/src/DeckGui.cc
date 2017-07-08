@@ -13,9 +13,9 @@ namespace
 
 DeckGui::DeckGui()
 {
-    for(int i = 0; i < Card::suits.size(); ++i)
+    for (int i = 0; i < Card::suits.size(); ++i)
     {
-        for(int j = 0; j < Card::ranks.size(); ++j)
+        for (int j = 0; j < Card::ranks.size(); ++j)
         {
             const string card = string(1, Card::ranks[j]) + string(1, Card::suits[i]);
             deck_[card] = createPixbuf("../assets/img/" + card + ".png");

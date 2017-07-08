@@ -22,6 +22,9 @@ public:
 	bool isLastPlayerHandEmpty() const;
 	void tallyScores();
 	bool isOver() const;
+	int getNextPlayerIndex() const;
+	bool isPlayerIndexHuman(int) const;
+	std::vector<std::string> getPlayerHandStr(int) const;
 	static bool isLegalMove(Card&);
 	
 	class GameException

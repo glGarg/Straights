@@ -199,6 +199,21 @@ bool Game::isOver() const
 	return isOver_;
 }
 
+int Game::getNextPlayerIndex() const
+{
+	return nextPlayer_;
+}
+
+bool Game::isPlayerIndexHuman(int index) const
+{
+	return players_[index]->isHuman();
+}
+
+std::vector<std::string> Game::getPlayerHandStr(int index) const
+{
+	return players_[index]->getHandStr();
+}
+
 void Game::decideNextPlayer()
 {
 	bool wrapped = false;

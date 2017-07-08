@@ -150,3 +150,13 @@ int Card::Rank::rank() const
 {
 	return rank_;
 }
+
+std::string Card::getSuits()
+{
+	return suits;
+}
+
+std::string Card::getRanks()
+{
+	return ranks;
+}

@@ -63,6 +63,8 @@ public:
 	bool operator==(const Card&) const;
 	bool operator<(const Card&) const;
 	operator std::string() const;
+	static std::string getSuits();
+	static std::string getRanks();
 	static std::string suits;
 	static std::string ranks;
 

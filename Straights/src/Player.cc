@@ -97,6 +97,17 @@ std::vector<std::string> Player::getDiscardPileStr() const
 	return discardedCards;
 }
 
+std::vector<std::string> Player::getHandStr() const
+{
+	std::vector<std::string> handCards;
+
+	for (size_t i = 0; i < hand_.size(); ++i)
+	{
+		handCards.push_back(*hand_[i]);
+	}
+	return handCards;
+}
+
 void Player::reset()
 {
 	discardPile_.erase(discardPile_.begin(), discardPile_.end());

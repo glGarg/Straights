@@ -2,11 +2,10 @@
 #include "Game.h"
 
 GuiView::GuiView(GameController *controller, Game *game) : Gtk::Window(), controller_(controller), game_(game),
-														   toolBarBox_(Gtk::ORIENTATION_HORIZONTAL), tableBox_(Gtk::ORIENTATION_VERTICAL),
-														   playersBox_(), handBox_(), windowPanels_(Gtk::ORIENTATION_VERTICAL),
-														   startNewGame_("Start New Game"), endGame_("End Game"),
-														   suitRows_{new Gtk::Box(), new Gtk::Box(),
-																	 new Gtk::Box(), new Gtk::Box()}
+														   playersBox_(), handBox_(), windowPanels_(Gtk::ORIENTATION_VERTICAL), deckGui_(new DeckGui()), 
+														   toolBarControl_(this), tableControl_(this), handControls_(4),
+														   playerControls_{new PlayerControl(this, 0), new PlayerControl(this, 1),
+														   				   new PlayerControl(this, 2), new PlayerControl(this, 3)}
 {
 	if (nullptr != game_)
 	{
@@ -15,61 +14,33 @@ GuiView::GuiView(GameController *controller, Game *game) : Gtk::Window(), contro
 
 	set_title("Straights");
     set_border_width(10);
-	set_default_size(500, 400);
+	set_default_size(500, 550);
 
 	add(windowPanels_);
-	windowPanels_.pack_start(toolBarBox_, Gtk::PACK_EXPAND_WIDGET);
-	windowPanels_.pack_start(tableBox_, Gtk::PACK_EXPAND_WIDGET);
+	windowPanels_.pack_start(toolBarControl_, Gtk::PACK_EXPAND_WIDGET);
+	windowPanels_.pack_start(tableControl_, Gtk::PACK_EXPAND_WIDGET);
 	windowPanels_.pack_start(playersBox_, Gtk::PACK_EXPAND_WIDGET);
 	windowPanels_.pack_start(handBox_, Gtk::PACK_EXPAND_WIDGET);
 
-	toolBarBox_.pack_start(startNewGame_, Gtk::PACK_EXPAND_WIDGET);
-	toolBarBox_.pack_start(endGame_, Gtk::PACK_EXPAND_WIDGET);
-
-	for(int i = 0; i < 4; ++i)
+	for (int i = 0; i < 4; ++i)
 	{
-		tableBox_.pack_start(*suitRows_[i], Gtk::PACK_EXPAND_WIDGET);
-		suitRows_[i]->set_spacing(5);
+		playersBox_.pack_start(*playerControls_[i]);
 	}
 
-	for(int i = 0; i < Card::ranks.size(); ++i)
-	{
-		for(int j = 0; j < Card::suits.size(); ++j)
-		{
-			const std::string card = std::string(1, Card::ranks[i]) + std::string(1, Card::suits[j]);
-			cardImages_[card] = new Gtk::Image();
-		}
-	}
-
-	initTable();
-
-	show_all();
+	initPlayerControls();
+	tableControl_.initTable(deckGui_);
 }
 
-void GuiView::initTable()
-{
-	for(int i = 0; i < Card::ranks.size(); ++i)
-	{
-		for(int j = 0; j < Card::suits.size(); ++j)
-		{
-			const std::string card = std::string(1, Card::ranks[i]) + std::string(1, Card::suits[j]);
-			cardImages_[card]->set(deckGui_[card]);
-			suitRows_[j]->pack_start(*cardImages_[card]);
-		}
-	}
-}
+void GuiView::initPlayerControls() {}
 
 GuiView::~GuiView()
 {
-	for(auto iter = cardImages_.begin(); iter != cardImages_.end(); iter++)
+	for (int i = 0; i < 4; ++i)
 	{
-		delete iter->second;
+		delete playerControls_[i];
 	}
 
-	for(int i = 0; i < 4; ++i)
-	{
-		delete suitRows_[i];
-	}
+	delete deckGui_;
 }
 
 void GuiView::init()
@@ -80,6 +51,23 @@ void GuiView::init()
 	{
 		return;
 	}
+
+	show_all();
+
+	for(int i = 0; i < 4; ++i)
+	{
+		if(game_->isPlayerIndexHuman(i))
+		{
+			std::vector<std::string> hand = game_->getPlayerHandStr(i);
+			handControls_[i] = new HandControl(this, i);
+			handControls_[i]->setHand(hand, deckGui_);
+			handControls_[i]->hide();
+			handBox_.pack_start(*handControls_[i]);
+		}
+	}
+
+	handControls_[game_->getNextPlayerIndex()]->show_all();
+	handBox_.show();
 }
 
 void GuiView::showMessage(std::string message) const
@@ -129,28 +117,26 @@ void GuiView::showCardList(std::string label, std::vector<std::string>& cards) c
 	std::cout << cardsIDs << std::endl;
 }
 
-// checking inital input 
-// i.e. 'c' for computer, 'h' for human
 bool GuiView::isPlayerHuman() const
 {
-	char c;
-	std::cout << ">";
-	std::cin >> c;
+	static int index = 0;
+	Gtk::MessageDialog dialog("Is player " + std::to_string(index) + " human?", false, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_YES_NO);
+	dialog.set_secondary_text("");
+	index = (index + 1) % 4;
 
-	if (std::cin.fail())
+	int result = dialog.run();
+	switch(result)
 	{
-		std::cin.clear();
-		return true;
-	}
-	else 
-	{
-		if (c == 'c')
+		case(Gtk::RESPONSE_YES):
+		{
+			return true;
+		}
+		default:
 		{
 			return false;
 		}
-
-		return true;
 	}
+	return true;
 }
 
 // get input from a human player
@@ -181,4 +167,10 @@ void GuiView::getUserInput()
 			break;
 		}
 	}
+}
+
+void GuiView::playerRageQuit(int playerId) const
+{
+	Command c = Command(Command::Type::RAGEQUIT, Card(0, 0));
+	controller_->processCommand(c);
 }

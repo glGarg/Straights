@@ -20,6 +20,7 @@ public:
 	bool isHandEmpty() const;
 	int getScore() const;
 	std::vector<std::string> getDiscardPileStr() const;
+	std::vector<std::string> getHandStr() const;
 	void reset();
 private:
 	int getCardIndex(const Card&) const;
