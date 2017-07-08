@@ -1,5 +1,6 @@
 #pragma once
 #include "View.h"
+#include "DeckGui.h"
 #include <gtkmm/application.h>
 #include <gtkmm/window.h>
 #include <gtkmm.h>
@@ -21,6 +22,7 @@ public:
 private:
 	GameController *controller_;
 	Game *game_;
+	DeckGui cardImages_;
 	Gtk::Box windowPanels_;
 	Gtk::Box toolBarBox_;
 	Gtk::Box tableBox_;

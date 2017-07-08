@@ -23,7 +23,7 @@ GuiView::GuiView(GameController *controller, Game *game) : Gtk::Window(), contro
 
 	toolBarBox_.pack_start(startNewGame_, Gtk::PACK_EXPAND_WIDGET);
 	toolBarBox_.pack_start(endGame_, Gtk::PACK_EXPAND_WIDGET);
-	
+
 	show_all();
 }
 
