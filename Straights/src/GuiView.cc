@@ -2,9 +2,11 @@
 #include "Game.h"
 
 GuiView::GuiView(GameController *controller, Game *game) : Gtk::Window(), controller_(controller), game_(game),
-														   toolBarBox_(Gtk::ORIENTATION_HORIZONTAL), tableBox_(), playersBox_(), handBox_(),
-														   windowPanels_(Gtk::ORIENTATION_VERTICAL), startNewGame_("Start New Game"),
-														   endGame_("End Game")
+														   toolBarBox_(Gtk::ORIENTATION_HORIZONTAL), tableBox_(Gtk::ORIENTATION_VERTICAL),
+														   playersBox_(), handBox_(), windowPanels_(Gtk::ORIENTATION_VERTICAL),
+														   startNewGame_("Start New Game"), endGame_("End Game"),
+														   suitRows_{new Gtk::Box(), new Gtk::Box(),
+																	 new Gtk::Box(), new Gtk::Box()}
 {
 	if (nullptr != game_)
 	{
@@ -24,10 +26,51 @@ GuiView::GuiView(GameController *controller, Game *game) : Gtk::Window(), contro
 	toolBarBox_.pack_start(startNewGame_, Gtk::PACK_EXPAND_WIDGET);
 	toolBarBox_.pack_start(endGame_, Gtk::PACK_EXPAND_WIDGET);
 
+	for(int i = 0; i < 4; ++i)
+	{
+		tableBox_.pack_start(*suitRows_[i], Gtk::PACK_EXPAND_WIDGET);
+		suitRows_[i]->set_spacing(5);
+	}
+
+	for(int i = 0; i < Card::ranks.size(); ++i)
+	{
+		for(int j = 0; j < Card::suits.size(); ++j)
+		{
+			const std::string card = std::string(1, Card::ranks[i]) + std::string(1, Card::suits[j]);
+			cardImages_[card] = new Gtk::Image();
+		}
+	}
+
+	initTable();
+
 	show_all();
 }
 
-GuiView::~GuiView() {}
+void GuiView::initTable()
+{
+	for(int i = 0; i < Card::ranks.size(); ++i)
+	{
+		for(int j = 0; j < Card::suits.size(); ++j)
+		{
+			const std::string card = std::string(1, Card::ranks[i]) + std::string(1, Card::suits[j]);
+			cardImages_[card]->set(deckGui_[card]);
+			suitRows_[j]->pack_start(*cardImages_[card]);
+		}
+	}
+}
+
+GuiView::~GuiView()
+{
+	for(auto iter = cardImages_.begin(); iter != cardImages_.end(); iter++)
+	{
+		delete iter->second;
+	}
+
+	for(int i = 0; i < 4; ++i)
+	{
+		delete suitRows_[i];
+	}
+}
 
 void GuiView::init()
 {
