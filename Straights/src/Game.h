@@ -6,7 +6,7 @@
 #include "Subject.h"
 #include "HumanPlayer.h"
 #include "ComputerPlayer.h"
-#include "TextView.h"
+#include "GuiView.h"
 
 class Game : public Subject
 {
