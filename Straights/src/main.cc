@@ -15,7 +15,14 @@ int main(int argc, char **argv)
 	GuiView view(&controller, &game);
 	view.init();
 
-	app->run(view);
+	try
+	{
+		app->run(view);
+	}
+	catch(Game::GameException &e)
+	{
+		std::cout << e.what() << std::endl;
+	}
 
 	return 0;
 }

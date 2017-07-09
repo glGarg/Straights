@@ -28,10 +28,14 @@ bool GameController::processCommand(Command& c)
 			model_->restartGame();
 			break;
 		case Command::Type::QUIT:
-			return false;
+			throw Game::GameOverException();
 		default:
 			break;
 		}
+	}
+	catch(Game::GameOverException &e)
+	{
+		throw e;
 	}
 	catch (Game::GameException &e)
 	{

@@ -120,7 +120,7 @@ void GuiView::showMessage(std::string message) const
 
 void GuiView::showError(std::string error) const
 {
-	Gtk::MessageDialog dialog(error, false, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK);
+	Gtk::MessageDialog dialog("Oops", false, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK);
 	dialog.set_secondary_text(error);
 	dialog.run();
 	std::cout << error << std::endl;

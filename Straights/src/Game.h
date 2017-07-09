@@ -32,7 +32,7 @@ public:
 	class GameException
 	{
 	public:
-		GameException(const std::string);
+		GameException(const std::string = "");
 		std::string what() const;
 	private:
 		const std::string message_;
@@ -43,6 +43,8 @@ public:
 	public:
 		IllegalDiscardException(Card&);
 	};
+
+	class GameOverException : public GameException {};
 private:
 	void displayGameState() const;
 	void decideNextPlayer();
