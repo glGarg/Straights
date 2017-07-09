@@ -36,11 +36,8 @@ GuiView::GuiView(GameController *controller, Game *game) : Gtk::Window(), contro
 		playersBox_.pack_start(*playerControls_[i]);
 	}
 
-	initPlayerControls();
 	tableControl_.initTable();
 }
-
-void GuiView::initPlayerControls() {}
 
 GuiView::~GuiView()
 {
@@ -63,32 +60,53 @@ void GuiView::init()
 		}
 	}
 
+	curHandControl_ = nullptr;
 	game_->init();
 	game_->beginRound();
 	if (game_->isOver() == true)
 	{
-		return;
+		//return;
 	}
 
 	show_all();
 
-	for (int i = 0; i < 4; ++i)
+	for (int i = 0; i < handControls_.size(); ++i)
 	{
 		if (game_->isPlayerIndexHuman(i))
 		{
-			std::vector<std::string> hand = game_->getPlayerHandStr(i);
 			handControls_[i] = new HandControl(this, i);
-			handControls_[i]->setHand(hand, deckGui_);
-			handControls_[i]->hide();
 			handBox_.pack_start(*handControls_[i]);
 		}
 	}
 
+	initPlayerControls();
+}
+
+void GuiView::initPlayerControls()
+{
+	for (int i = 0; i < handControls_.size(); ++i)
+	{
+		if (game_->isPlayerIndexHuman(i) && nullptr != handControls_[i])
+		{
+			std::vector<std::string> hand = game_->getPlayerHandStr(i);
+			handControls_[i]->setHand(hand, deckGui_);
+			handControls_[i]->hide();
+		}
+	}
+
 	size_t nextPlayerIndex = game_->getNextPlayerIndex();
-	playerControls_[nextPlayerIndex]->enableRage();
 	curHandControl_ = handControls_[nextPlayerIndex];
+	if (nullptr != curHandControl_)
+	{
+		curHandControl_->show_all();
+	}
+
 	curPlayerControl_ = playerControls_[nextPlayerIndex];
-	curHandControl_->show_all();
+	if (game_->isPlayerIndexHuman(nextPlayerIndex))
+	{
+		curPlayerControl_->enableRage();
+	}
+
 	handBox_.show();
 }
 
@@ -222,13 +240,8 @@ void GuiView::quitGame()
 	controller_->processCommand(c);
 }
 
-void GuiView::restartGameWithSeed(int newSeed)
+void GuiView::reset()
 {
-	Command c;
-	c.type = Command::Type::RESTART;
-	c.card = Card(Card::Rank(0), Card::Suit(0));
-	seed = newSeed;
-	controller_->processCommand(c);
 	for (int i = 0; i < 4; ++i)
 	{
 		if(nullptr != playerControls_[i])
@@ -236,9 +249,21 @@ void GuiView::restartGameWithSeed(int newSeed)
 			playerControls_[i]->reset();
 		}
 	}
+
 	curHandControl_ = nullptr;
 	curPlayerControl_ = nullptr;
 	tableControl_.initTable();
+	initPlayerControls();
+}
+
+void GuiView::restartGameWithSeed(int newSeed)
+{
+	Command c;
+	c.type = Command::Type::RESTART;
+	c.card = Card(Card::Rank(0), Card::Suit(0));
+	seed = newSeed;
+	controller_->processCommand(c);
+	reset();
 	init();
 }
 

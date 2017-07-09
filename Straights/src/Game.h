@@ -52,6 +52,7 @@ private:
 	static std::map<Card::Suit, std::vector<Card>> cardsPlayed_;
 	static const int PLAYER_COUNT;
 	static bool isOver_;
+	static bool newGameStarted_;
 	size_t nextPlayer_;
 	size_t lastPlayer_;
 	std::vector<Player *> players_;

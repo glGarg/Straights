@@ -9,6 +9,7 @@ public:
 	View();
 	virtual ~View();
 	virtual void init() = 0;
+	virtual void reset();
 	virtual void showMessage(std::string) const = 0;
 	virtual void showError(std::string) const = 0;
 	virtual void showPlayerPlay(int, std::string) = 0;

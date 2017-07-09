@@ -59,6 +59,14 @@ void Subject::updateDisplay() const
 	}
 }
 
+void Subject::resetDisplay()
+{
+	for (auto &o : observers_)
+	{
+		o->reset();
+	}
+}
+
 bool Subject::isPlayerHuman(int id) const
 {
 	if (observers_.size() > 0) 

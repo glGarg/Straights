@@ -1,9 +1,17 @@
 #include "Game.h"
 #include <algorithm>
 
+namespace
+{
+	void print(std::string msg)
+	{
+		std::cout << msg << std::endl;
+	}
+}
+
 Game::Game() : Subject(), players_(4), playerScores_(PLAYER_COUNT), nextPlayer_(0), lastPlayer_(0) {}
 
-bool Game::firstTurn_ = true, Game::isOver_ = false;
+bool Game::firstTurn_ = true, Game::isOver_ = false, Game::newGameStarted_ = true;
 
 const int Game::PLAYER_COUNT = 4;
 
@@ -14,7 +22,7 @@ std::map<Card::Suit, std::vector<Card>> Game::cardsPlayed_ = std::map<Card::Suit
 
 void Game::init()
 {
-	if (firstTurn_ == true)
+	if (newGameStarted_ == true)
 	{
 		for (int i = 0; i < PLAYER_COUNT; ++i)
 		{
@@ -32,6 +40,8 @@ void Game::init()
 				players_[i] = new ComputerPlayer();
 			}
 		}
+
+		newGameStarted_ = false;
 	}
 
 	deck_.shuffle();
@@ -52,7 +62,6 @@ void Game::init()
 
 		players_[i]->setHand(hand);
 	}
-
 	nextPlayer_ = playerWith7OfSpades;
 	lastPlayer_ = (nextPlayer_ + PLAYER_COUNT - 1) % 4;
 }
@@ -147,7 +156,7 @@ void Game::rageQuit()
 
 void Game::restartGame()
 {
-	firstTurn_ = true;
+	newGameStarted_ = true;
 	isOver_ = false;
 	for (auto &i : cardsPlayed_)
 	{
@@ -157,6 +166,7 @@ void Game::restartGame()
 	for (int i = 0; i < PLAYER_COUNT; ++i)
 	{
 		players_[i]->reset();
+		playerScores_[i] = 0;
 	}
 }
 
@@ -239,8 +249,8 @@ void Game::decideNextPlayer()
 {
 	bool wrapped = false;
 	for (size_t i = players_[nextPlayer_]->isHuman() ? ((nextPlayer_ + 1) % 4) : nextPlayer_;
-		i != nextPlayer_ || !wrapped || !players_[i]->isHuman();
-		++i)
+		 i != nextPlayer_ || !wrapped || !players_[i]->isHuman();
+		 ++i)
 	{
 		if (isLastPlayerHandEmpty())
 		{
@@ -292,6 +302,7 @@ void Game::resetRound()
 		players_[i]->reset();
 	}
 
+	resetDisplay();
 	beginRound();
 }
 

@@ -16,6 +16,7 @@ public:
 	~GuiView();
 	void init() override;
 	void initPlayerControls();
+	void reset() override;
 	void showMessage(std::string) const override;
 	void showError(std::string) const override;
 	void showPlayerPlay(int, std::string) override;

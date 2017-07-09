@@ -20,5 +20,6 @@ private:
     std::vector<Gtk::Box *> cardBoxes_;
     std::vector<Gtk::Button *> cardButtons_;
     std::vector<Gtk::Image *> cardImages_;
+	std::vector<sigc::connection> cardConnections_;
 	GuiView *view_;
 };
