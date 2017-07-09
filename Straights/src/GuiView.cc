@@ -2,6 +2,14 @@
 #include "Game.h"
 #include "Deck.h"
 
+namespace
+{
+	void print(std::string message)
+	{
+		std::cout << message << std::endl;
+	}
+}
+
 GuiView::GuiView(GameController *controller, Game *game) : Gtk::Window(), controller_(controller), game_(game), curHandControl_(nullptr), curPlayerControl_(nullptr),
 														   playersBox_(), handBox_(), windowPanels_(Gtk::ORIENTATION_VERTICAL), deckGui_(new DeckGui()), 
 														   toolBarControl_(this), tableControl_(this, deckGui_), handControls_(4),
@@ -46,6 +54,15 @@ GuiView::~GuiView()
 
 void GuiView::init()
 {
+	for (int i = 0; i < handControls_.size(); ++i)
+	{
+		if (nullptr != handControls_[i])
+		{
+			delete handControls_[i];
+			handControls_[i] = nullptr;
+		}
+	}
+
 	game_->init();
 	game_->beginRound();
 	if (game_->isOver() == true)
@@ -147,11 +164,8 @@ void GuiView::updateDisplay()
 	curPlayerControl_ = playerControls_[nextPlayerIndex];
 	if(nullptr != curHandControl_)
 	{
-		std::vector<std::string> hand = game_->getPlayerHandStr(nextPlayerIndex);
-		std::vector<std::string> legalPlays = game_->getPlayerLegalPlays(nextPlayerIndex);
-		curHandControl_->highlightLegalPlays(hand, legalPlays);
 		curHandControl_->show_all();
-		if(!curPlayerControl_->getRageQuit())
+		if(nullptr != curPlayerControl_ && !curPlayerControl_->getRageQuit())
 		{
 			curPlayerControl_->enableRage();
 		}
@@ -186,6 +200,7 @@ void GuiView::playerRageQuit(int playerId)
 	{
 		delete curHandControl_;
 		curHandControl_ = nullptr;
+		handControls_[playerId] = nullptr;
 	}
 
 	controller_->processCommand(c);
@@ -214,6 +229,17 @@ void GuiView::restartGameWithSeed(int newSeed)
 	c.card = Card(Card::Rank(0), Card::Suit(0));
 	seed = newSeed;
 	controller_->processCommand(c);
+	for (int i = 0; i < 4; ++i)
+	{
+		if(nullptr != playerControls_[i])
+		{
+			playerControls_[i]->reset();
+		}
+	}
+	curHandControl_ = nullptr;
+	curPlayerControl_ = nullptr;
+	tableControl_.initTable();
+	init();
 }
 
 void GuiView::playerDiscardedCard(std::string card)

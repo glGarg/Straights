@@ -18,7 +18,7 @@ void Game::init()
 	{
 		for (int i = 0; i < PLAYER_COUNT; ++i)
 		{
-			if (players_[i])
+			if (nullptr != players_[i])
 			{
 				delete players_[i];
 			}
@@ -49,6 +49,7 @@ void Game::init()
 				}
 			}
 		}
+
 		players_[i]->setHand(hand);
 	}
 
@@ -153,8 +154,10 @@ void Game::restartGame()
 		i.second.clear();
 	}
 
-	init();
-	beginRound();
+	for (int i = 0; i < PLAYER_COUNT; ++i)
+	{
+		players_[i]->reset();
+	}
 }
 
 bool Game::isLastPlayerHandEmpty() const

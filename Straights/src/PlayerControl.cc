@@ -14,6 +14,14 @@ PlayerControl::PlayerControl(GuiView *view, int index) : Gtk::Box(Gtk::ORIENTATI
     rage_.set_sensitive(false);
 }
 
+void PlayerControl::reset()
+{
+    discardCount_ = score_ = 0;
+    info_.set_label("0 points\n0 discards");
+    playerRageQuit_ = false;
+    rage_.set_sensitive(false);
+}
+
 bool PlayerControl::getRageQuit() const
 {
     return playerRageQuit_;

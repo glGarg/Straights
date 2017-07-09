@@ -8,6 +8,7 @@ class PlayerControl : public Gtk::Box
 public:
     PlayerControl(GuiView *, int);
     ~PlayerControl();
+    void reset();
     void rageQuit();
     bool getRageQuit() const;
     void enableRage();
