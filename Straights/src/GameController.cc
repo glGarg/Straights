@@ -24,6 +24,9 @@ bool GameController::processCommand(Command& c)
 		case Command::Type::RAGEQUIT:
 			model_->rageQuit();
 			break;
+		case Command::Type::RESTART:
+			model_->restartGame();
+			break;
 		case Command::Type::QUIT:
 			return false;
 		default:

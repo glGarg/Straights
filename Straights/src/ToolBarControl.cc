@@ -18,16 +18,9 @@ ToolBarControl::~ToolBarControl() {}
 
 void ToolBarControl::startNewGame() const 
 {
-    std::string inputSeed = seedEntry_->get_text();
-    int seed = std::atoi(inputSeed);
-    if (seed)
-    {
-        // start new game with seed
-    }
-    else
-    {
-        // start new game with 0
-    }
+    const std::string inputSeed = seedEntry_.get_text();
+    int seed = std::atoi(inputSeed.c_str());
+    view_->restartGameWithSeed(seed);
 }
 
 void ToolBarControl::endGame() const

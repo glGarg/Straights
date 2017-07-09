@@ -14,6 +14,7 @@ public:
 		DISCARD,
 		DECK,
 		QUIT,
+		RESTART,
 		RAGEQUIT,
 		BAD_COMMAND\
 	};

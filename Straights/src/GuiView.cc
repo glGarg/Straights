@@ -1,5 +1,6 @@
 #include "GuiView.h"
 #include "Game.h"
+#include "Deck.h"
 
 GuiView::GuiView(GameController *controller, Game *game) : Gtk::Window(), controller_(controller), game_(game), curHandControl_(nullptr), curPlayerControl_(nullptr),
 														   playersBox_(), handBox_(), windowPanels_(Gtk::ORIENTATION_VERTICAL), deckGui_(new DeckGui()), 
@@ -203,6 +204,15 @@ void GuiView::quitGame()
 	Command c;
 	c.type = Command::Type::QUIT;
 	c.card = Card(Card::Rank(0), Card::Suit(0));
+	controller_->processCommand(c);
+}
+
+void GuiView::restartGameWithSeed(int newSeed)
+{
+	Command c;
+	c.type = Command::Type::RESTART;
+	c.card = Card(Card::Rank(0), Card::Suit(0));
+	seed = newSeed;
 	controller_->processCommand(c);
 }
 

@@ -18,6 +18,11 @@ void Game::init()
 	{
 		for (int i = 0; i < PLAYER_COUNT; ++i)
 		{
+			if (players_[i])
+			{
+				delete players_[i];
+			}
+			
 			if (isPlayerHuman(i + 1))
 			{
 				players_[i] = new HumanPlayer();
@@ -137,6 +142,19 @@ void Game::rageQuit()
 	delete temp;
 	showMessage("Player " + std::to_string(nextPlayer_ + 1) + " ragequits. A computer will now take over.");
 	decideNextPlayer();
+}
+
+void Game::restartGame()
+{
+	firstTurn_ = true;
+	isOver_ = false;
+	for (auto &i : cardsPlayed_)
+	{
+		i.second.clear();
+	}
+
+	init();
+	beginRound();
 }
 
 bool Game::isLastPlayerHandEmpty() const

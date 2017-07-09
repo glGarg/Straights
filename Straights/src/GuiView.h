@@ -32,6 +32,7 @@ public:
 	void playerPlayedCard(std::string);
 	void playerDiscardedCard(std::string);
 	void quitGame();
+	void restartGameWithSeed(int);
 	void updateDisplay();
 private:
 	GameController *controller_;

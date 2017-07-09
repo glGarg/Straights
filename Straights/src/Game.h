@@ -19,6 +19,7 @@ public:
 	void discardCard(Card&);
 	void printDeck() const;
 	void rageQuit();
+	void restartGame();
 	bool isLastPlayerHandEmpty() const;
 	void tallyScores();
 	bool isOver() const;
