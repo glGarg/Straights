@@ -316,19 +316,27 @@ void Game::displayGameState() const
 	}
 
 	std::vector<Card *> cardsInHand = players_[nextPlayer_]->getHand();
-	std::vector<std::string> hand, legalPlays;
+	std::vector<std::string> hand, legalPlays = getPlayerLegalPlays(nextPlayer_);
+	for (size_t i = 0; i < cardsInHand.size(); ++i) { hand.push_back(*cardsInHand[i]); }
+	
+	showCardList("Your hand", hand);
+	showCardList("Legal plays", legalPlays);
+	updateDisplay();
+}
+
+std::vector<std::string> Game::getPlayerLegalPlays(int id) const
+{
+	std::vector<std::string> legalPlays;
+	std::vector<Card *> cardsInHand = players_[id]->getHand();
 	for (size_t i = 0; i < cardsInHand.size(); ++i)
 	{
-		hand.push_back(*cardsInHand[i]);
 		if (isLegalMove(*cardsInHand[i]))
 		{
 			legalPlays.push_back(std::string(*cardsInHand[i]));
 		}
 	}
 
-	showCardList("Your hand", hand);
-	showCardList("Legal plays", legalPlays);
-	updateDisplay();
+	return legalPlays;
 }
 
 Game::GameException::GameException(const std::string message) : message_(message) {}

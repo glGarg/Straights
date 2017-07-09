@@ -25,6 +25,7 @@ public:
 	int getNextPlayerIndex() const;
 	bool isPlayerIndexHuman(int) const;
 	std::vector<std::string> getPlayerHandStr(int) const;
+	std::vector<std::string> getPlayerLegalPlays(int) const;
 	static bool isLegalMove(Card&);
 	
 	class GameException

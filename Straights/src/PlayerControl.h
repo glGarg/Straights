@@ -9,6 +9,7 @@ public:
     PlayerControl(GuiView *, int);
     ~PlayerControl();
     void rageQuit();
+    bool getRageQuit() const;
     void enableRage();
     void disableRage();
     void setDiscardCount(int);
@@ -16,6 +17,7 @@ public:
 private:
     Gtk::Label playerId_;
     Gtk::Button rage_;
+    bool playerRageQuit_;
     Gtk::Label info_;
     int playerIndex_;
     int discardCount_;

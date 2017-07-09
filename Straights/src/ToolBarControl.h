@@ -8,9 +8,9 @@ class ToolBarControl : public Gtk::Box
 public:
     ToolBarControl(GuiView *);
     ~ToolBarControl();
-private:
     void startNewGame() const;
     void endGame() const;
+private:
     Gtk::Entry seedEntry_;
     Gtk::Button startNewGame_;
 	Gtk::Button endGame_;

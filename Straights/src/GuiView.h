@@ -24,11 +24,14 @@ public:
 	void showCardList(std::string, std::vector<std::string>&) const override;
 	bool isPlayerHuman() const override;
 	void getUserInput() override;
+	std::vector<std::string> getPlayerLegalPlays(int) const;
+	std::vector<std::string> getPlayerHand(int) const;
 
 	//Gameplay functions
 	void playerRageQuit(int);
-	void playerPlayedCard(int) const;
-	void playerDiscardedCard(int) const;
+	void playerPlayedCard(std::string);
+	void playerDiscardedCard(std::string);
+	void quitGame();
 	void updateDisplay();
 private:
 	GameController *controller_;
@@ -37,6 +40,7 @@ private:
 	Gtk::Box handBox_;
 	std::vector<HandControl *> handControls_;
 	HandControl *curHandControl_;
+	PlayerControl *curPlayerControl_;
 	Gtk::Box windowPanels_;
 	Gtk::Box playersBox_;
 	std::vector<PlayerControl *> playerControls_;

@@ -3,7 +3,7 @@
 
 PlayerControl::PlayerControl(GuiView *view, int index) : Gtk::Box(Gtk::ORIENTATION_VERTICAL), view_(view),
                                                          rage_("Rage Quit!"), playerIndex_(index), discardCount_(0),
-                                                         score_(0), info_("0 points\n0 discards"),
+                                                         score_(0), info_("0 points\n0 discards"), playerRageQuit_(false),
                                                          playerId_("Player " + std::to_string(index + 1))
 {
     pack_start(playerId_);
@@ -12,6 +12,11 @@ PlayerControl::PlayerControl(GuiView *view, int index) : Gtk::Box(Gtk::ORIENTATI
 
     rage_.signal_clicked().connect(sigc::mem_fun(*this, &PlayerControl::rageQuit));
     rage_.set_sensitive(false);
+}
+
+bool PlayerControl::getRageQuit() const
+{
+    return playerRageQuit_;
 }
 
 void PlayerControl::enableRage()
@@ -38,4 +43,5 @@ void PlayerControl::rageQuit()
 {
     view_->playerRageQuit(playerIndex_);
     rage_.set_sensitive(false);
+    playerRageQuit_ = true;
 }

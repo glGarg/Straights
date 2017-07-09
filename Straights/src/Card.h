@@ -25,7 +25,8 @@ public:
     	static const int MAX_SUIT = 4; // Maximum # of suits available for a card
     	static const int SPADE = 3;    // Suit index associated with Spades
 
-    	Suit(int s);
+    	explicit Suit(int s);
+		explicit Suit(char s);
     	// Throws: "Invalid suit" if s < 0 || s >= MAX_SUIT
     	// Modifies: this
 
@@ -45,7 +46,8 @@ public:
     	static const int MAX_RANK = 13; // Maximum # of card ranks (face values)
     	static const int SEVEN = 6;     // Rank index associated with the 7
 
-    	Rank(int r);
+    	explicit Rank(int r);
+		explicit Rank(char s);
     	// Throws: "Invalid rank" if r < 0 || r >= MAX_RANK
     	// Modifies: this
 
