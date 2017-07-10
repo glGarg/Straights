@@ -190,6 +190,20 @@ void GuiView::updateDisplay()
 	}
 }
 
+void GuiView::showWinners(std::vector<int>& winners) const
+{
+	std::string winnerMessage = "";
+	for (size_t i = 0; i < winners.size(); ++i)
+	{
+		winnerMessage +=  "Player " + std::to_string(winners[i] + 1) + " wins!\n";
+	}
+
+	Gtk::MessageDialog dialog("You won!", false, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK);
+	dialog.set_secondary_text(winnerMessage);
+	dialog.run();
+	std::cout << winnerMessage << std::endl;
+}
+
 bool GuiView::isPlayerHuman() const
 {
 	static int index = 0;

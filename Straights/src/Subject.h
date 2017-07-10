@@ -13,6 +13,7 @@ public:
 protected:
 	void showMessage(std::string) const;
 	void showError(std::string) const;
+	void showWinners(std::vector<int>&) const;
 	void showPlayerPlay(int, std::string) const;
 	void showPlayerDiscard(int, std::string) const;
 	void printCards(std::vector<std::string>&) const;

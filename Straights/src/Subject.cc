@@ -27,6 +27,14 @@ void Subject::showError(std::string error) const
 	}
 }
 
+void Subject::showWinners(std::vector<int>& winnerIndices) const
+{
+	for (auto &o : observers_)
+	{
+		o->showWinners(winnerIndices);
+	}
+}
+
 void Subject::showPlayerPlay(int id, std::string card) const
 {
 	for (auto &o : observers_)

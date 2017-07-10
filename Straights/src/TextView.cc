@@ -70,6 +70,14 @@ void TextView::showCardList(std::string label, std::vector<std::string>& cards) 
 	std::cout << cardsIDs << std::endl;
 }
 
+void TextView::showWinners(std::vector<int>& winners) const
+{
+	for (size_t i = 0; i < winners.size(); ++i)
+	{
+		showMessage("Player " + std::to_string(winners[i] + 1) + " wins!");
+	}
+}
+
 // checking inital input 
 // i.e. 'c' for computer, 'h' for human
 bool TextView::isPlayerHuman() const

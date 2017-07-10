@@ -17,6 +17,7 @@ public:
 	virtual void printDeck(const std::vector<std::string>&) const = 0;
 	virtual bool isPlayerHuman() const = 0;
 	virtual void showCardList(std::string, std::vector<std::string>&) const = 0;
+	virtual void showWinners(std::vector<int>&) const = 0;
 	virtual void getUserInput() = 0;
 	virtual void updateDisplay();
 };

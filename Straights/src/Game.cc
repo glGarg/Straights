@@ -200,7 +200,7 @@ void Game::tallyScores()
 
 	if (isOver_)
 	{
-		std::vector<size_t> lowestScoreIndices = { 0 };
+		std::vector<int> lowestScoreIndices = { 0 };
 		for (size_t i = 1; i < players_.size(); ++i)
 		{
 			if (playerScores_[i] < playerScores_[lowestScoreIndices[0]])
@@ -214,10 +214,7 @@ void Game::tallyScores()
 			}
 		}
 
-		for (size_t i = 0; i < lowestScoreIndices.size(); ++i)
-		{
-			showMessage("Player " + std::to_string(lowestScoreIndices[i] + 1) + " wins!");
-		}
+		showWinners(lowestScoreIndices);
 	}
 	else
 	{

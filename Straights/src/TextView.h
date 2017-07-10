@@ -13,6 +13,7 @@ public:
 	void showPlayerDiscard(int, std::string) override;
 	void printDeck(const std::vector<std::string>&) const override;
 	void showCardList(std::string, std::vector<std::string>&) const override;
+	void showWinners(std::vector<int>&) const override;
 	bool isPlayerHuman() const override;
 	void getUserInput() override;
 private:
