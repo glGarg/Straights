@@ -47,12 +47,12 @@ void HandControl::playCard(std::string card, Gtk::Button *button)
     {
         if (legalPlays[i] == card)
         {
-            view_->playerPlayedCard(card);
-            if(nullptr != button)
+            if (nullptr != button)
             {
                 button->set_sensitive(false);
             }
             
+            view_->playerPlayedCard(card);
             return;
         }
     }

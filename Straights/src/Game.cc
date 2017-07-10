@@ -69,6 +69,7 @@ void Game::init()
 void Game::beginRound()
 {
 	showMessage("A new round begins. It's player " + std::to_string(nextPlayer_ + 1) + "'s turn to play.");
+	firstTurn_ = true;
 	if (players_[nextPlayer_]->isHuman())
 	{
 		displayGameState();
@@ -288,7 +289,6 @@ void Game::decideNextPlayer()
 void Game::resetRound()
 {
 	init();
-	firstTurn_ = true;
 	for (auto &iter : cardsPlayed_)
 	{
 		iter.second.erase(iter.second.begin(), iter.second.end());

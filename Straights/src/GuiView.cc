@@ -63,12 +63,11 @@ void GuiView::init()
 	curHandControl_ = nullptr;
 	game_->init();
 	game_->beginRound();
+	show_all();
 	if (game_->isOver() == true)
 	{
-		//return;
+		return;
 	}
-
-	show_all();
 
 	for (int i = 0; i < handControls_.size(); ++i)
 	{

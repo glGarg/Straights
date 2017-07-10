@@ -26,7 +26,7 @@ bool GameController::processCommand(Command& c)
 			break;
 		case Command::Type::RESTART:
 			model_->restartGame();
-			break;
+			return true;
 		case Command::Type::QUIT:
 			throw Game::GameOverException();
 		default:
