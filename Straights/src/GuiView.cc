@@ -189,6 +189,14 @@ void GuiView::updateDisplay()
 	}
 }
 
+void GuiView::updateScore(std::vector<int>& scores)
+{
+	for (int i = 0; i < scores.size(); ++i)
+	{
+		playerControls_[i]->setScore(scores[i]);
+	}
+}
+
 void GuiView::showWinners(std::vector<int>& winners) const
 {
 	std::string winnerMessage = "";

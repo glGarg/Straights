@@ -15,7 +15,9 @@ public:
     void disableRage();
     void setDiscardCount(int);
     int getDiscardCount() const;
+    void setScore(int);
 private:
+    void updateLabel();
     Gtk::Box playerBox_;
     Gtk::Button rage_;
     bool playerRageQuit_;

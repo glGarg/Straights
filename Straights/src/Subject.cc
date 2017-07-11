@@ -67,6 +67,14 @@ void Subject::updateDisplay() const
 	}
 }
 
+void Subject::updateScore(std::vector<int> scores)
+{
+	for (auto &o : observers_)
+	{
+		o->updateScore(scores);
+	}
+}
+
 void Subject::resetDisplay()
 {
 	for (auto &o : observers_)

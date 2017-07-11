@@ -20,4 +20,5 @@ public:
 	virtual void showWinners(std::vector<int>&) const = 0;
 	virtual void getUserInput() = 0;
 	virtual void updateDisplay();
+	virtual void updateScore(std::vector<int>&);
 };

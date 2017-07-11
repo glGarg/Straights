@@ -199,6 +199,7 @@ void Game::tallyScores()
 		}
 	}
 
+	updateScore(playerScores_);
 	if (isOver_)
 	{
 		std::vector<int> lowestScoreIndices = { 0 };

@@ -35,7 +35,8 @@ public:
 	void playerDiscardedCard(std::string);
 	void quitGame();
 	void restartGameWithSeed(int);
-	void updateDisplay();
+	void updateDisplay() override;
+	void updateScore(std::vector<int>&) override;
 private:
 	GameController *controller_;
 	Game *game_;

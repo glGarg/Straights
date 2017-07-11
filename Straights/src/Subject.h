@@ -20,6 +20,7 @@ protected:
 	bool isPlayerHuman(int) const;
 	void showCardList(std::string, std::vector<std::string>&) const;
 	void updateDisplay() const;
+	void updateScore(std::vector<int>);
 	void resetDisplay();
 private:
 	std::vector<View *> observers_;
