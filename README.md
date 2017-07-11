@@ -9,4 +9,4 @@ Step 1: cd over to the src directory and run make
 Step 2: execute the game binary using ./straights
 
 #### Screen Capture  
-  ![Screenshot](http://i.imgur.com/twc2lm7.png "Screenshot0")
+  ![Screenshot](http://i.imgur.com/9NJ85Xz.png "Screenshot0")
