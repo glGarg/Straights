@@ -24,6 +24,12 @@ void PlayerControl::reset()
     updateLabel();
 }
 
+void PlayerControl::resetScore()
+{
+    score_ = 0;
+    updateLabel();
+}
+
 bool PlayerControl::getRageQuit() const
 {
     return playerRageQuit_;

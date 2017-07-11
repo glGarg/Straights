@@ -30,7 +30,7 @@ GuiView::GuiView(GameController *controller, Game *game) : Gtk::Window(), contro
 	gameBox_.pack_start(playersBox_, Gtk::PACK_EXPAND_WIDGET);
 	gameBox_.pack_start(handBox_, Gtk::PACK_EXPAND_WIDGET);
 
-	logBox_.set_size_request(120, 550);
+	logBox_.set_size_request(125, 550);
 	logBox_.pack_start(logControl_);
 
 	windowBox_.pack_start(gameBox_);
@@ -289,6 +289,14 @@ void GuiView::restartGameWithSeed(int newSeed)
 	c.card = Card(Card::Rank(0), Card::Suit(0));
 	seed = newSeed;
 	controller_->processCommand(c);
+	for (int i = 0; i < 4; ++i)
+	{
+		if(nullptr != playerControls_[i])
+		{
+			playerControls_[i]->resetScore();
+		}
+	}
+
 	reset();
 	init();
 }

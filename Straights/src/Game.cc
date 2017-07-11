@@ -37,7 +37,7 @@ void Game::init()
 			}
 			else
 			{
-				players_[i] = new ComputerPlayer();
+				players_[i] = new SmartComputerPlayer();
 			}
 		}
 
@@ -149,7 +149,7 @@ void Game::printDeck() const
 void Game::rageQuit()
 {
 	Player *temp = players_[nextPlayer_];
-	players_[nextPlayer_] = new ComputerPlayer(std::move(temp->getHand()), std::move(temp->getDiscardPile()));
+	players_[nextPlayer_] = new SmartComputerPlayer(std::move(temp->getHand()), std::move(temp->getDiscardPile()));
 	delete temp;
 	showMessage("Player " + std::to_string(nextPlayer_ + 1) + " ragequits. A computer will now take over.");
 	decideNextPlayer();

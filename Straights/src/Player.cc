@@ -113,6 +113,16 @@ void Player::reset()
 	discardPile_.erase(discardPile_.begin(), discardPile_.end());
 }
 
+void Player::removeCardFromHand(int i)
+{
+	hand_.erase(hand_.begin() + i);
+}
+
+void Player::addCardToDiscardPile(Card *card)
+{
+	discardPile_.push_back(card);
+}
+
 int Player::getCardIndex(const Card& card) const
 {
 	for (size_t i = 0; i < hand_.size(); ++i)
