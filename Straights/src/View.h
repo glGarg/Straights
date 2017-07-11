@@ -13,7 +13,7 @@ public:
 	virtual void showMessage(std::string) const = 0;
 	virtual void showError(std::string) const = 0;
 	virtual void showPlayerPlay(int, std::string) = 0;
-	virtual void showPlayerDiscard(int, std::string) = 0;
+	virtual void showPlayerDiscard(int, std::string) const = 0;
 	virtual void printDeck(const std::vector<std::string>&) const = 0;
 	virtual bool isPlayerHuman() const = 0;
 	virtual void showCardList(std::string, std::vector<std::string>&) const = 0;

@@ -11,8 +11,8 @@ namespace
 }
 
 GuiView::GuiView(GameController *controller, Game *game) : Gtk::Window(), controller_(controller), game_(game), curHandControl_(nullptr), curPlayerControl_(nullptr),
-														   playersBox_(), handBox_(), windowPanels_(Gtk::ORIENTATION_VERTICAL), deckGui_(new DeckGui()), 
-														   toolBarControl_(this), tableControl_(this, deckGui_), handControls_(4),
+														   playersBox_(), handBox_(), windowBox_(), gameBox_(Gtk::ORIENTATION_VERTICAL), deckGui_(new DeckGui()),
+														   toolBarControl_(this), tableControl_(this, deckGui_), logControl_(this), handControls_(4),
 														   playerControls_{new PlayerControl(this, 0), new PlayerControl(this, 1),
 														   				   new PlayerControl(this, 2), new PlayerControl(this, 3)}
 {
@@ -25,11 +25,18 @@ GuiView::GuiView(GameController *controller, Game *game) : Gtk::Window(), contro
     set_border_width(10);
 	set_default_size(500, 550);
 
-	add(windowPanels_);
-	windowPanels_.pack_start(toolBarControl_, Gtk::PACK_EXPAND_WIDGET);
-	windowPanels_.pack_start(tableControl_, Gtk::PACK_EXPAND_WIDGET);
-	windowPanels_.pack_start(playersBox_, Gtk::PACK_EXPAND_WIDGET);
-	windowPanels_.pack_start(handBox_, Gtk::PACK_EXPAND_WIDGET);
+	gameBox_.pack_start(toolBarControl_, Gtk::PACK_EXPAND_WIDGET);
+	gameBox_.pack_start(tableControl_, Gtk::PACK_EXPAND_WIDGET);
+	gameBox_.pack_start(playersBox_, Gtk::PACK_EXPAND_WIDGET);
+	gameBox_.pack_start(handBox_, Gtk::PACK_EXPAND_WIDGET);
+
+	logBox_.set_size_request(120, 550);
+	logBox_.pack_start(logControl_);
+
+	windowBox_.pack_start(gameBox_);
+	windowBox_.pack_start(logBox_);
+
+	add(windowBox_);
 
 	for (int i = 0; i < 4; ++i)
 	{
@@ -111,9 +118,6 @@ void GuiView::initPlayerControls()
 
 void GuiView::showMessage(std::string message) const
 {
-	//Gtk::MessageDialog dialog(message, false, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK);
-	//dialog.set_secondary_text(message);
-	//dialog.run();
 	std::cout << message << std::endl;
 }
 
@@ -128,10 +132,10 @@ void GuiView::showError(std::string error) const
 void GuiView::showPlayerPlay(int id, std::string card)
 {
 	tableControl_.showCard(card);
-	std::cout << "Player " << std::to_string(id) << " plays " << card + "." << std::endl;
+	logControl_.appendText("Player " + std::to_string(id) + " plays " + card + ".");
 }
 
-void GuiView::showPlayerDiscard(int id, std::string card)
+void GuiView::showPlayerDiscard(int id, std::string card) const
 {
 	std::cout << "Player " << std::to_string(id) << " discards " << card + "." << std::endl;
 	playerControls_[id - 1]->setDiscardCount(playerControls_[id - 1]->getDiscardCount() + 1);
@@ -274,6 +278,7 @@ void GuiView::reset()
 	curHandControl_ = nullptr;
 	curPlayerControl_ = nullptr;
 	tableControl_.initTable();
+	logControl_.reset();
 	initPlayerControls();
 }
 

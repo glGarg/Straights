@@ -5,6 +5,7 @@
 #include "HandControl.h"
 #include "ToolBarControl.h"
 #include "TableControl.h"
+#include "LogControl.h"
 #include <gtkmm/application.h>
 #include <gtkmm/window.h>
 #include <gtkmm.h>
@@ -20,7 +21,7 @@ public:
 	void showMessage(std::string) const override;
 	void showError(std::string) const override;
 	void showPlayerPlay(int, std::string) override;
-	void showPlayerDiscard(int, std::string) override;
+	void showPlayerDiscard(int, std::string) const override;
 	void printDeck(const std::vector<std::string>&) const override;
 	void showCardList(std::string, std::vector<std::string>&) const override;
 	void showWinners(std::vector<int>&) const override;
@@ -41,13 +42,16 @@ private:
 	GameController *controller_;
 	Game *game_;
 	DeckGui *deckGui_;
-	Gtk::Box handBox_;
-	std::vector<HandControl *> handControls_;
 	HandControl *curHandControl_;
 	PlayerControl *curPlayerControl_;
-	Gtk::Box windowPanels_;
+	Gtk::Box handBox_;
+	Gtk::Box windowBox_;
+	Gtk::Box gameBox_;
+	Gtk::Box logBox_;
 	Gtk::Box playersBox_;
-	std::vector<PlayerControl *> playerControls_;
+	LogControl logControl_;
 	TableControl tableControl_;
 	ToolBarControl toolBarControl_;
+	std::vector<HandControl *> handControls_;
+	std::vector<PlayerControl *> playerControls_;
 };

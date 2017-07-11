@@ -38,7 +38,7 @@ void TextView::showPlayerPlay(int id, std::string card)
 	std::cout << "Player " << std::to_string(id) << " plays " << card + "." << std::endl;
 }
 
-void TextView::showPlayerDiscard(int id, std::string card)
+void TextView::showPlayerDiscard(int id, std::string card) const
 {
 	std::cout << "Player " << std::to_string(id) << " discards " << card + "." << std::endl;
 }
