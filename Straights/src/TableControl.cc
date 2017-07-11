@@ -1,14 +1,14 @@
 #include "TableControl.h"
 #include "GuiView.h"
 
-TableControl::TableControl(GuiView *view, DeckGui *deckGui) : Gtk::Box(Gtk::ORIENTATION_VERTICAL), view_(view),
+TableControl::TableControl(GuiView *view, DeckGui *deckGui) : Gtk::Frame("Cards on the table"), tableBox_(Gtk::ORIENTATION_VERTICAL),
+															  view_(view), deckGui_(deckGui),
                                             				  suitRows_{new Gtk::Box(), new Gtk::Box(),
-											          					new Gtk::Box(), new Gtk::Box()},
-															  deckGui_(deckGui)
+											          					new Gtk::Box(), new Gtk::Box()}
 {
     for (int i = 0; i < 4; ++i)
 	{
-		pack_start(*suitRows_[i], Gtk::PACK_EXPAND_WIDGET);
+		tableBox_.pack_start(*suitRows_[i], Gtk::PACK_EXPAND_WIDGET);
 		suitRows_[i]->set_spacing(5);
 	}
     
@@ -20,6 +20,8 @@ TableControl::TableControl(GuiView *view, DeckGui *deckGui) : Gtk::Box(Gtk::ORIE
 			cardImages_[card] = new Gtk::Image();
 		}
 	}
+
+	add(tableBox_);
 }
 
 TableControl::~TableControl()

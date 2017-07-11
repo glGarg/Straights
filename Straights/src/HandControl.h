@@ -5,7 +5,7 @@
 class DeckGui;
 class GuiView;
 
-class HandControl : public Gtk::Box
+class HandControl : public Gtk::Frame
 {
 public:
     HandControl(GuiView *, int);
@@ -15,7 +15,6 @@ public:
     void highlightLegalPlays(std::vector<std::string>&, std::vector<std::string>&);
 private:
     int index_;
-    Gtk::Label playerLabel_;
     Gtk::Box handBox_;
     std::vector<Gtk::Box *> cardBoxes_;
     std::vector<Gtk::Button *> cardButtons_;

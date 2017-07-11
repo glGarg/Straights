@@ -1,17 +1,17 @@
 #include "PlayerControl.h"
 #include "GuiView.h"
 
-PlayerControl::PlayerControl(GuiView *view, int index) : Gtk::Box(Gtk::ORIENTATION_VERTICAL), view_(view),
-                                                         rage_("Rage Quit!"), playerIndex_(index), discardCount_(0),
-                                                         score_(0), info_("0 points\n0 discards"), playerRageQuit_(false),
-                                                         playerId_("Player " + std::to_string(index + 1))
+PlayerControl::PlayerControl(GuiView *view, int index) : Gtk::Frame("Player " + std::to_string(index + 1)), playerBox_(Gtk::ORIENTATION_VERTICAL),
+                                                         view_(view), rage_("Rage Quit!"), playerIndex_(index), discardCount_(0),
+                                                         score_(0), info_("0 points\n0 discards"), playerRageQuit_(false)
 {
-    pack_start(playerId_);
-    pack_start(rage_);
-    pack_start(info_);
+    playerBox_.pack_start(rage_);
+    playerBox_.pack_start(info_);
 
     rage_.signal_clicked().connect(sigc::mem_fun(*this, &PlayerControl::rageQuit));
     rage_.set_sensitive(false);
+
+    add(playerBox_);
 }
 
 void PlayerControl::reset()

@@ -44,6 +44,7 @@ std::vector<std::string> Deck::getCards() const
 void Deck::shuffle()
 {
 	static std::mt19937 rng(seed);
+	rng.seed(seed);
 	int n = CARD_COUNT;
 	while (n > 1) {
 		int k = (int)(rng() % n);

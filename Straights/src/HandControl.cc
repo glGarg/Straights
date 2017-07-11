@@ -2,8 +2,9 @@
 #include "GuiView.h"
 #include "DeckGui.h"
 
-HandControl::HandControl(GuiView *view, int playerIndex) : Gtk::Box(Gtk::ORIENTATION_VERTICAL), view_(view), cardBoxes_(13), cardButtons_(13), cardImages_(13), cardConnections_(13), index_(playerIndex),
-                                                           handBox_(Gtk::ORIENTATION_HORIZONTAL), playerLabel_("Player " + std::to_string(playerIndex + 1) + "'s hand")
+HandControl::HandControl(GuiView *view, int playerIndex) : Gtk::Frame("Your hand"), view_(view), cardBoxes_(13),
+                                                           cardButtons_(13), cardImages_(13), cardConnections_(13), index_(playerIndex),
+                                                           handBox_(Gtk::ORIENTATION_HORIZONTAL)
 {
     for (int i = 0; i < 13; ++i)
 	{
@@ -15,8 +16,7 @@ HandControl::HandControl(GuiView *view, int playerIndex) : Gtk::Box(Gtk::ORIENTA
         handBox_.pack_start(*cardBoxes_[i]);
 	}
 
-    pack_start(playerLabel_);
-    pack_start(handBox_);
+    add(handBox_);
 }
 
 HandControl::~HandControl()

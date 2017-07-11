@@ -3,7 +3,7 @@
 
 class GuiView;
 
-class PlayerControl : public Gtk::Box
+class PlayerControl : public Gtk::Frame
 {
 public:
     PlayerControl(GuiView *, int);
@@ -16,7 +16,7 @@ public:
     void setDiscardCount(int);
     int getDiscardCount() const;
 private:
-    Gtk::Label playerId_;
+    Gtk::Box playerBox_;
     Gtk::Button rage_;
     bool playerRageQuit_;
     Gtk::Label info_;

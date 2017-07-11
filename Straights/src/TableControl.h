@@ -6,7 +6,7 @@
 class DeckGui;
 class GuiView;
 
-class TableControl : public Gtk::Box
+class TableControl : public Gtk::Frame
 {
 public:
     TableControl(GuiView *, DeckGui *);
@@ -14,6 +14,7 @@ public:
     void initTable();
     void showCard(std::string);
 private:
+    Gtk::Box tableBox_;
     std::map<std::string, Gtk::Image *> cardImages_;
 	std::vector<Gtk::Box *> suitRows_;
     GuiView *view_;

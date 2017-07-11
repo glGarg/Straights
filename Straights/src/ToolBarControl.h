@@ -3,7 +3,7 @@
 
 class GuiView;
 
-class ToolBarControl : public Gtk::Box
+class ToolBarControl : public Gtk::Frame
 {
 public:
     ToolBarControl(GuiView *);
@@ -11,6 +11,7 @@ public:
     void startNewGame() const;
     void endGame() const;
 private:
+    Gtk::Box toolBarBox_;
     Gtk::Entry seedEntry_;
     Gtk::Button startNewGame_;
 	Gtk::Button endGame_;
