@@ -16,7 +16,6 @@ namespace
         switch (GST_MESSAGE_TYPE (msg))
         {
             case GST_MESSAGE_EOS:
-                g_print ("End of stream\n");
                 g_main_loop_quit(loop);
                 break;
             case GST_MESSAGE_ERROR:
@@ -25,7 +24,6 @@ namespace
                 GError *error;
                 gst_message_parse_error(msg, &error, &debug);
                 g_free(debug);
-                g_printerr("Error: %s\n", error->message);
                 g_error_free(error);
                 g_main_loop_quit(loop);
                 break;

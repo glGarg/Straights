@@ -17,7 +17,7 @@ int main(int argc, char **argv)
 	GuiView view(&controller, &game);
 	view.init();
 
-	std::string filename = "Lepidoptera.ogg";
+	std::string filename = "../assets/music/Lepidoptera.ogg";
 	const char *track = filename.c_str();
 	if (argc > 2)
 	{
