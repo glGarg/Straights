@@ -1,5 +1,7 @@
 #include <iostream>
 #include "Game.h"
+#include "Music.h"
+#include <gst/gst.h>
 
 int main(int argc, char **argv)
 {
@@ -15,6 +17,17 @@ int main(int argc, char **argv)
 	GuiView view(&controller, &game);
 	view.init();
 
+	std::string filename = "Lepidoptera.ogg";
+	const char *track = filename.c_str();
+	if (argc > 2)
+	{
+		track = argv[2];
+	}
+	
+	gst_init(&argc, &argv);
+	Music music(track);
+	music.play();
+
 	try
 	{
 		app->run(view);
@@ -23,6 +36,8 @@ int main(int argc, char **argv)
 	{
 		std::cout << e.what() << std::endl;
 	}
+
+	music.stopPlaying();
 
 	return 0;
 }
