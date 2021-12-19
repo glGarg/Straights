@@ -1,12 +1,9 @@
 # Straights
-Straights card game
-
-#### About Straights
-A simple card game written in C++ using gtkmm
+A multi-player card game written in C++ using gtkmm.
 
 #### How To Use
-Step 1: cd over to the src directory and run make  
-Step 2: execute the game binary using ./straights
+Step 1: cd into the src directory and run make.  
+Step 2: Execute the game binary using ./straights.
 
 #### Screen Capture  
   ![Screenshot](http://i.imgur.com/9NJ85Xz.png "Screenshot0")
